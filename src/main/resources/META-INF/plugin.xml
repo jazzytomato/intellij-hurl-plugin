@@ -25,6 +25,10 @@
                 language="Hurl"
                 implementationClass="com.github.jazzytomato.hurl.language.HurlSyntaxHighlighterFactory"/>
 
+        <lang.commenter
+                language="Hurl"
+                implementationClass="com.github.jazzytomato.hurl.language.HurlCommenter"/>
+
     </extensions>
 
     <applicationListeners>
