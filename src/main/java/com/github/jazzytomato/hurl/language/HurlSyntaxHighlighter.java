@@ -14,23 +14,19 @@ import static com.intellij.openapi.editor.colors.TextAttributesKey.createTextAtt
 
 public class HurlSyntaxHighlighter extends SyntaxHighlighterBase {
 
-    public static final TextAttributesKey SEPARATOR =
-            createTextAttributesKey("HURL_SEPARATOR", DefaultLanguageHighlighterColors.OPERATION_SIGN);
-    public static final TextAttributesKey KEY =
-            createTextAttributesKey("HURL_KEY", DefaultLanguageHighlighterColors.KEYWORD);
-    public static final TextAttributesKey VALUE =
-            createTextAttributesKey("HURL_VALUE", DefaultLanguageHighlighterColors.STRING);
+    public static final TextAttributesKey METHOD =
+            createTextAttributesKey("HURL_METHOD", DefaultLanguageHighlighterColors.KEYWORD);
+    public static final TextAttributesKey URL =
+            createTextAttributesKey("HURL_URL", DefaultLanguageHighlighterColors.STRING);
     public static final TextAttributesKey COMMENT =
             createTextAttributesKey("HURL_COMMENT", DefaultLanguageHighlighterColors.LINE_COMMENT);
     public static final TextAttributesKey BAD_CHARACTER =
             createTextAttributesKey("HURL_BAD_CHARACTER", HighlighterColors.BAD_CHARACTER);
 
-
-    private static final TextAttributesKey[] BAD_CHAR_KEYS = new TextAttributesKey[]{BAD_CHARACTER};
-    private static final TextAttributesKey[] SEPARATOR_KEYS = new TextAttributesKey[]{SEPARATOR};
-    private static final TextAttributesKey[] KEY_KEYS = new TextAttributesKey[]{KEY};
-    private static final TextAttributesKey[] VALUE_KEYS = new TextAttributesKey[]{VALUE};
+    private static final TextAttributesKey[] METHOD_KEYS = new TextAttributesKey[]{METHOD};
+    private static final TextAttributesKey[] URL_KEYS = new TextAttributesKey[]{URL};
     private static final TextAttributesKey[] COMMENT_KEYS = new TextAttributesKey[]{COMMENT};
+    private static final TextAttributesKey[] BAD_CHAR_KEYS = new TextAttributesKey[]{BAD_CHARACTER};
     private static final TextAttributesKey[] EMPTY_KEYS = new TextAttributesKey[0];
 
     @NotNull
@@ -41,14 +37,12 @@ public class HurlSyntaxHighlighter extends SyntaxHighlighterBase {
 
     @Override
     public TextAttributesKey @NotNull [] getTokenHighlights(IElementType tokenType) {
-        if (tokenType.equals(HurlTypes.SEPARATOR)) {
-            return SEPARATOR_KEYS;
+        if (tokenType.equals(HurlTypes.GET_METHOD) || tokenType.equals(HurlTypes.POST_METHOD) ||
+                tokenType.equals(HurlTypes.PUT_METHOD) || tokenType.equals(HurlTypes.DELETE_METHOD)) {
+            return METHOD_KEYS;
         }
-        if (tokenType.equals(HurlTypes.KEY)) {
-            return KEY_KEYS;
-        }
-        if (tokenType.equals(HurlTypes.VALUE)) {
-            return VALUE_KEYS;
+        if (tokenType.equals(HurlTypes.URL)) {
+            return URL_KEYS;
         }
         if (tokenType.equals(HurlTypes.COMMENT)) {
             return COMMENT_KEYS;
@@ -58,5 +52,4 @@ public class HurlSyntaxHighlighter extends SyntaxHighlighterBase {
         }
         return EMPTY_KEYS;
     }
-
 }

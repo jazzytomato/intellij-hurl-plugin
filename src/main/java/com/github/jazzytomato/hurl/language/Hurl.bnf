@@ -1,55 +1,24 @@
-//{
-//  parserClass="com.github.jazzytomato.hurl.HurlParser"
-//
-//  extends="com.intellij.extapi.psi.ASTWrapperPsiElement"
-//
-//  psiClassPrefix="Hurl"
-//  psiImplClassSuffix="Impl"
-//  psiPackage="com.github.jazzytomato.hurl.language.psi"
-//  psiImplPackage="com.github.jazzytomato.hurl.language.psi.impl"
-//
-//  elementTypeHolderClass="com.github.jazzytomato.hurl.language.psi.HurlElementType"
-//  elementTypeClass="com.github.jazzytomato.hurl.language.psi.HurlElementType"
-//  tokenTypeClass="com.github.jazzytomato.hurl.language.psi.HurlTokenType"
-//  tokenTypeFactory="com.intellij.psi.tree.IElementType"
-//}
-//
-//hurlFile ::= (request)+
-//
-//request ::= method url header* body?
-//
-//method ::= "GET" | "POST" | "PUT" | "DELETE"
-//
-//url ::= "http" "://" identifier
-//
-//header ::= identifier ":" value
-//
-//body ::= "{" value "}"
-//
-//identifier ::= IDENTIFIER
-//
-//value ::= STRING
-//
-//IDENTIFIER ::= [a-zA-Z_][a-zA-Z0-9_]*
-//STRING ::= "\"" [^"\n]* "\""
-
 {
   parserClass="com.github.jazzytomato.hurl.language.parser.HurlParser"
-
   extends="com.intellij.extapi.psi.ASTWrapperPsiElement"
-
   psiClassPrefix="Hurl"
   psiImplClassSuffix="Impl"
   psiPackage="com.github.jazzytomato.hurl.language.psi"
   psiImplPackage="com.github.jazzytomato.hurl.language.psi.impl"
-
   elementTypeHolderClass="com.github.jazzytomato.hurl.language.psi.HurlTypes"
   elementTypeClass="com.github.jazzytomato.hurl.language.psi.HurlElementType"
   tokenTypeClass="com.github.jazzytomato.hurl.language.psi.HurlTokenType"
 }
 
-simpleFile ::= item_*
+hurlFile ::= request* (COMMENT | CRLF)*
 
-private item_ ::= (property|COMMENT|CRLF)
+request ::= method url (CRLF | WHITE_SPACE)*
 
-property ::= (KEY? SEPARATOR VALUE?) | KEY
+method ::= GET_METHOD | POST_METHOD | PUT_METHOD | DELETE_METHOD
+
+url ::= ( "http://" | "https://" ) IDENTIFIER ("/" IDENTIFIER)*
+
+COMMENT ::= "#" [^\r\n]*
+CRLF ::= "\n"
+WHITE_SPACE ::= [ \t\f]+
+IDENTIFIER ::= [a-zA-Z0-9_.-]+

@@ -40,6 +40,12 @@ final class HurlParserDefinition implements ParserDefinition {
 
     @NotNull
     @Override
+    public TokenSet getWhitespaceTokens() {
+        return TokenSet.WHITE_SPACE;
+    }
+
+    @NotNull
+    @Override
     public PsiParser createParser(final Project project) {
         return new HurlParser();
     }

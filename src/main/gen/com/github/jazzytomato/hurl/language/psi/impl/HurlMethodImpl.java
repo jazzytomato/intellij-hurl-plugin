@@ -11,14 +11,14 @@ import static com.github.jazzytomato.hurl.language.psi.HurlTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import com.github.jazzytomato.hurl.language.psi.*;
 
-public class HurlPropertyImpl extends ASTWrapperPsiElement implements HurlProperty {
+public class HurlMethodImpl extends ASTWrapperPsiElement implements HurlMethod {
 
-  public HurlPropertyImpl(@NotNull ASTNode node) {
+  public HurlMethodImpl(@NotNull ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull HurlVisitor visitor) {
-    visitor.visitProperty(this);
+    visitor.visitMethod(this);
   }
 
   @Override

@@ -7,7 +7,31 @@ import com.intellij.psi.PsiElement;
 
 public class HurlVisitor extends PsiElementVisitor {
 
-  public void visitProperty(@NotNull HurlProperty o) {
+  public void visitComment(@NotNull HurlComment o) {
+    visitPsiElement(o);
+  }
+
+  public void visitCrlf(@NotNull HurlCrlf o) {
+    visitPsiElement(o);
+  }
+
+  public void visitIdentifier(@NotNull HurlIdentifier o) {
+    visitPsiElement(o);
+  }
+
+  public void visitWhiteSpace(@NotNull HurlWhiteSpace o) {
+    visitPsiElement(o);
+  }
+
+  public void visitMethod(@NotNull HurlMethod o) {
+    visitPsiElement(o);
+  }
+
+  public void visitRequest(@NotNull HurlRequest o) {
+    visitPsiElement(o);
+  }
+
+  public void visitUrl(@NotNull HurlUrl o) {
     visitPsiElement(o);
   }
 
