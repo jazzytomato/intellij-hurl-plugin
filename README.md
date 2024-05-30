@@ -7,13 +7,15 @@
 - [x] Basic Syntax highlighting
 - [x] Code commenter
 - [x] Generate run config from gutter and run it (all file)
+- [ ] Fix parser errors
+- [ ] Tidy up and publish
 - [ ] Full parser of hurl grammar https://hurl.dev/docs/grammar.html#grammar
-- [ ] Run individual requests
+- [ ] Run individual requests (could use --from-entry & --to-entry options, or generate a tmp file but not ideal)
 - [ ] Code completion
 - [ ] JSON body support
 - [ ] Vars file support
 - [ ] Better run config options
-- [ ] Mark failed assertions as errors in the editor 
+- [ ] Mark failed assertions as errors in the editor
 
 ![Build](https://github.com/jazzytomato/intellij-hurl-plugin/workflows/Build/badge.svg)
 [![Version](https://img.shields.io/jetbrains/plugin/v/PLUGIN_ID.svg)](https://plugins.jetbrains.com/plugin/PLUGIN_ID)
