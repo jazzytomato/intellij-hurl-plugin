@@ -2,43 +2,21 @@ package com.github.jazzytomato.hurl.run;
 
 import com.intellij.execution.configurations.ConfigurationFactory;
 import com.intellij.execution.configurations.ConfigurationType;
+import com.intellij.execution.configurations.ConfigurationTypeBase;
 import com.intellij.icons.AllIcons;
+import com.intellij.openapi.util.NotNullLazyValue;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
+final class HurlRunConfigurationType extends ConfigurationTypeBase {
 
-public class HurlRunConfigurationType implements ConfigurationType {
+    static final String ID = "HurlRunConfiguration";
 
-    @Override
-    @NotNull
-    public String getDisplayName() {
-        return "Hurl";
+    HurlRunConfigurationType() {
+        super(ID, "Hurl", "Hurl run configuration type",
+                NotNullLazyValue.createValue(() -> AllIcons.Nodes.Console));
+        addFactory(new HurlRunConfigurationFactory(this));
     }
 
-    @Override
-    public String getConfigurationTypeDescription() {
-        return "Run Hurl files";
-    }
-
-    @Override
-    public Icon getIcon() {
-        return AllIcons.RunConfigurations.Application;
-    }
-
-    @NotNull
-    @Override
-    public String getId() {
-        return "HURL_RUN_CONFIGURATION";
-    }
-
-    @Override
-    public ConfigurationFactory[] getConfigurationFactories() {
-        return new ConfigurationFactory[]{new HurlRunConfigurationFactory(this)};
-    }
-
-    @Nullable
-    public static HurlRunConfigurationType getInstance() {
-        return ConfigurationType.CONFIGURATION_TYPE_EP.findExtension(HurlRunConfigurationType.class);
-    }
 }

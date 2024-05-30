@@ -32,6 +32,9 @@
         <configurationType
                 implementation="com.github.jazzytomato.hurl.run.HurlRunConfigurationType"/>
 
+        <runConfigurationProducer implementation="com.github.jazzytomato.hurl.run.HurlRunConfigurationProducer"/>
+
+
         <runLineMarkerContributor
                 language="Hurl"
                 implementationClass="com.github.jazzytomato.hurl.run.HurlGutterRunLineMarkerProvider"/>

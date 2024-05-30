@@ -2,6 +2,7 @@ package com.github.jazzytomato.hurl.run;
 
 import com.intellij.execution.actions.ConfigurationContext;
 import com.intellij.execution.actions.RunConfigurationProducer;
+import com.intellij.execution.configurations.ConfigurationTypeUtil;
 import com.intellij.openapi.util.Ref;
 import com.intellij.psi.PsiElement;
 import org.jetbrains.annotations.NotNull;
@@ -9,7 +10,7 @@ import org.jetbrains.annotations.NotNull;
 public class HurlRunConfigurationProducer extends RunConfigurationProducer<HurlRunConfiguration> {
 
     protected HurlRunConfigurationProducer() {
-        super(HurlRunConfigurationType.getInstance());
+        super(new HurlRunConfigurationFactory(ConfigurationTypeUtil.findConfigurationType(HurlRunConfigurationType.class)));
     }
 
     @Override
