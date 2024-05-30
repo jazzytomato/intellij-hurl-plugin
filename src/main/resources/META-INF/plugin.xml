@@ -21,6 +21,10 @@
                 language="Hurl"
                 implementationClass="com.github.jazzytomato.hurl.language.HurlParserDefinition"/>
 
+        <lang.syntaxHighlighterFactory
+                language="Hurl"
+                implementationClass="com.github.jazzytomato.hurl.language.HurlSyntaxHighlighterFactory"/>
+
     </extensions>
 
     <applicationListeners>
