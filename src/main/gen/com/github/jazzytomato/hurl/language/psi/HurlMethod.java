@@ -7,4 +7,16 @@ import com.intellij.psi.PsiElement;
 
 public interface HurlMethod extends PsiElement {
 
+  @Nullable
+  HurlDeleteMethod getDeleteMethod();
+
+  @Nullable
+  HurlGetMethod getGetMethod();
+
+  @Nullable
+  HurlPostMethod getPostMethod();
+
+  @Nullable
+  HurlPutMethod getPutMethod();
+
 }

@@ -27,4 +27,28 @@ public class HurlMethodImpl extends ASTWrapperPsiElement implements HurlMethod {
     else super.accept(visitor);
   }
 
+  @Override
+  @Nullable
+  public HurlDeleteMethod getDeleteMethod() {
+    return findChildByClass(HurlDeleteMethod.class);
+  }
+
+  @Override
+  @Nullable
+  public HurlGetMethod getGetMethod() {
+    return findChildByClass(HurlGetMethod.class);
+  }
+
+  @Override
+  @Nullable
+  public HurlPostMethod getPostMethod() {
+    return findChildByClass(HurlPostMethod.class);
+  }
+
+  @Override
+  @Nullable
+  public HurlPutMethod getPutMethod() {
+    return findChildByClass(HurlPutMethod.class);
+  }
+
 }

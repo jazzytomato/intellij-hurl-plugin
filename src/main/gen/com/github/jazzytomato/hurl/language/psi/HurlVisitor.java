@@ -15,7 +15,23 @@ public class HurlVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitDeleteMethod(@NotNull HurlDeleteMethod o) {
+    visitPsiElement(o);
+  }
+
+  public void visitGetMethod(@NotNull HurlGetMethod o) {
+    visitPsiElement(o);
+  }
+
   public void visitIdentifier(@NotNull HurlIdentifier o) {
+    visitPsiElement(o);
+  }
+
+  public void visitPostMethod(@NotNull HurlPostMethod o) {
+    visitPsiElement(o);
+  }
+
+  public void visitPutMethod(@NotNull HurlPutMethod o) {
     visitPsiElement(o);
   }
 

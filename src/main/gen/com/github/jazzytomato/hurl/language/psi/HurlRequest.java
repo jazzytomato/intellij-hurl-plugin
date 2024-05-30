@@ -8,9 +8,6 @@ import com.intellij.psi.PsiElement;
 public interface HurlRequest extends PsiElement {
 
   @NotNull
-  List<HurlCrlf> getCrlfList();
-
-  @NotNull
   List<HurlWhiteSpace> getWhiteSpaceList();
 
   @NotNull

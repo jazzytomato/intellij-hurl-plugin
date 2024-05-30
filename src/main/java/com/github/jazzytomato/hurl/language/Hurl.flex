@@ -18,7 +18,7 @@ import com.intellij.psi.TokenType;
 CRLF=\R
 WHITE_SPACE=[\ \n\t\f]
 IDENTIFIER=[a-zA-Z0-9_.-]+
-COMMENT=("#"|"!")[^\r\n]*
+COMMENT=("#")[^\r\n]*
 URL=([a-zA-Z][a-zA-Z0-9+.-]*:\/\/)[a-zA-Z0-9.-]+(\/[a-zA-Z0-9_.-]*)?(\?[a-zA-Z0-9=&]*)?
 %%
 

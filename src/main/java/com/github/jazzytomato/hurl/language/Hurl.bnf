@@ -10,15 +10,19 @@
   tokenTypeClass="com.github.jazzytomato.hurl.language.psi.HurlTokenType"
 }
 
-hurlFile ::= request* (COMMENT | CRLF)*
+hurlFile ::= (COMMENT | WHITE_SPACE)* request* (COMMENT | WHITE_SPACE)*
 
-request ::= method url (CRLF | WHITE_SPACE)*
+request ::= method url (WHITE_SPACE)*
 
 method ::= GET_METHOD | POST_METHOD | PUT_METHOD | DELETE_METHOD
 
-url ::= ( "http://" | "https://" ) IDENTIFIER ("/" IDENTIFIER)*
+url ::= "regexp:https?://.*"
 
-COMMENT ::= "#" [^\r\n]*
+COMMENT ::= "regexp:#.*"
 CRLF ::= "\n"
-WHITE_SPACE ::= [ \t\f]+
+WHITE_SPACE ::= "regexp:\s+"
 IDENTIFIER ::= [a-zA-Z0-9_.-]+
+GET_METHOD ::= "GET"
+POST_METHOD ::= "POST"
+PUT_METHOD ::= "PUT"
+DELETE_METHOD ::= "DELETE"
