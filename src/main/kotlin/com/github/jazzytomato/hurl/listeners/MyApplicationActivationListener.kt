@@ -1,4 +1,4 @@
-package com.github.jazzytomato.intellijhurlplugin.listeners
+package com.github.jazzytomato.hurl.listeners
 
 import com.intellij.openapi.application.ApplicationActivationListener
 import com.intellij.openapi.diagnostic.thisLogger

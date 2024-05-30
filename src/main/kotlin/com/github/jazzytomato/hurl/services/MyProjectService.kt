@@ -1,9 +1,9 @@
-package com.github.jazzytomato.intellijhurlplugin.services
+package com.github.jazzytomato.hurl.services
 
 import com.intellij.openapi.components.Service
 import com.intellij.openapi.diagnostic.thisLogger
 import com.intellij.openapi.project.Project
-import com.github.jazzytomato.intellijhurlplugin.MyBundle
+import com.github.jazzytomato.hurl.MyBundle
 
 @Service(Service.Level.PROJECT)
 class MyProjectService(project: Project) {

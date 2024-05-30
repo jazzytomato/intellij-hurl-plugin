@@ -1,4 +1,4 @@
-package com.github.jazzytomato.intellijhurlplugin
+package com.github.jazzytomato.hurl
 
 import com.intellij.DynamicBundle
 import org.jetbrains.annotations.NonNls
