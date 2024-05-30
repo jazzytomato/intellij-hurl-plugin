@@ -19,6 +19,7 @@ CRLF=\R
 WHITE_SPACE=[\ \n\t\f]
 IDENTIFIER=[a-zA-Z0-9_.-]+
 COMMENT=("#"|"!")[^\r\n]*
+URL=([a-zA-Z][a-zA-Z0-9+.-]*:\/\/)[a-zA-Z0-9.-]+(\/[a-zA-Z0-9_.-]*)?(\?[a-zA-Z0-9=&]*)?
 %%
 
 <YYINITIAL> {COMMENT}                           { return HurlTypes.COMMENT; }
@@ -26,7 +27,7 @@ COMMENT=("#"|"!")[^\r\n]*
 <YYINITIAL> "POST"                              { return HurlTypes.POST_METHOD; }
 <YYINITIAL> "PUT"                               { return HurlTypes.PUT_METHOD; }
 <YYINITIAL> "DELETE"                            { return HurlTypes.DELETE_METHOD; }
-<YYINITIAL> ("http://"|"https://") {IDENTIFIER} ("/" {IDENTIFIER})* { return HurlTypes.URL; }
+<YYINITIAL> {URL}                               { return HurlTypes.URL; }
 <YYINITIAL> {CRLF}                              { return TokenType.NEW_LINE_INDENT; }
 <YYINITIAL> {WHITE_SPACE}                       { return TokenType.WHITE_SPACE; }
 <YYINITIAL> {IDENTIFIER}                        { return HurlTypes.IDENTIFIER; }
