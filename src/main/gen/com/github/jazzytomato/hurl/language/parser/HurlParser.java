@@ -36,211 +36,99 @@ public class HurlParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // "regexp:#.*"
-  public static boolean COMMENT(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "COMMENT")) return false;
-    boolean r;
-    Marker m = enter_section_(b, l, _NONE_, COMMENT, "<comment>");
-    r = consumeToken(b, "regexp:#.*");
-    exit_section_(b, l, m, r, false, null);
-    return r;
-  }
-
-  /* ********************************************************** */
-  // "\n"
-  public static boolean CRLF(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "CRLF")) return false;
-    boolean r;
-    Marker m = enter_section_(b, l, _NONE_, CRLF, "<crlf>");
-    r = consumeToken(b, "\n");
-    exit_section_(b, l, m, r, false, null);
-    return r;
-  }
-
-  /* ********************************************************** */
-  // "DELETE"
-  public static boolean DELETE_METHOD(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "DELETE_METHOD")) return false;
-    boolean r;
-    Marker m = enter_section_(b, l, _NONE_, DELETE_METHOD, "<delete method>");
-    r = consumeToken(b, "DELETE");
-    exit_section_(b, l, m, r, false, null);
-    return r;
-  }
-
-  /* ********************************************************** */
-  // "GET"
-  public static boolean GET_METHOD(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "GET_METHOD")) return false;
-    boolean r;
-    Marker m = enter_section_(b, l, _NONE_, GET_METHOD, "<get method>");
-    r = consumeToken(b, "GET");
-    exit_section_(b, l, m, r, false, null);
-    return r;
-  }
-
-  /* ********************************************************** */
-  // [a-zA-Z0-9_.-]+
-  public static boolean IDENTIFIER(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "IDENTIFIER")) return false;
-    Marker m = enter_section_(b, l, _NONE_, IDENTIFIER, "<identifier>");
-    consumeToken(b, A_ZA_Z0_9___);
-    exit_section_(b, l, m, true, false, null);
-    return true;
-  }
-
-  /* ********************************************************** */
-  // "POST"
-  public static boolean POST_METHOD(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "POST_METHOD")) return false;
-    boolean r;
-    Marker m = enter_section_(b, l, _NONE_, POST_METHOD, "<post method>");
-    r = consumeToken(b, "POST");
-    exit_section_(b, l, m, r, false, null);
-    return r;
-  }
-
-  /* ********************************************************** */
-  // "PUT"
-  public static boolean PUT_METHOD(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "PUT_METHOD")) return false;
-    boolean r;
-    Marker m = enter_section_(b, l, _NONE_, PUT_METHOD, "<put method>");
-    r = consumeToken(b, "PUT");
-    exit_section_(b, l, m, r, false, null);
-    return r;
-  }
-
-  /* ********************************************************** */
-  // "regexp:\s+"
-  public static boolean WHITE_SPACE(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "WHITE_SPACE")) return false;
-    boolean r;
-    Marker m = enter_section_(b, l, _NONE_, WHITE_SPACE, "<white space>");
-    r = consumeToken(b, "regexp:\s+");
-    exit_section_(b, l, m, r, false, null);
-    return r;
-  }
-
-  /* ********************************************************** */
-  // (COMMENT | WHITE_SPACE)* request* (COMMENT | WHITE_SPACE)*
+  // request*
   static boolean hurlFile(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "hurlFile")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = hurlFile_0(b, l + 1);
-    r = r && hurlFile_1(b, l + 1);
-    r = r && hurlFile_2(b, l + 1);
-    exit_section_(b, m, null, r);
-    return r;
-  }
-
-  // (COMMENT | WHITE_SPACE)*
-  private static boolean hurlFile_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "hurlFile_0")) return false;
-    while (true) {
-      int c = current_position_(b);
-      if (!hurlFile_0_0(b, l + 1)) break;
-      if (!empty_element_parsed_guard_(b, "hurlFile_0", c)) break;
-    }
-    return true;
-  }
-
-  // COMMENT | WHITE_SPACE
-  private static boolean hurlFile_0_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "hurlFile_0_0")) return false;
-    boolean r;
-    r = COMMENT(b, l + 1);
-    if (!r) r = WHITE_SPACE(b, l + 1);
-    return r;
-  }
-
-  // request*
-  private static boolean hurlFile_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "hurlFile_1")) return false;
     while (true) {
       int c = current_position_(b);
       if (!request(b, l + 1)) break;
-      if (!empty_element_parsed_guard_(b, "hurlFile_1", c)) break;
+      if (!empty_element_parsed_guard_(b, "hurlFile", c)) break;
     }
     return true;
   }
 
-  // (COMMENT | WHITE_SPACE)*
-  private static boolean hurlFile_2(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "hurlFile_2")) return false;
-    while (true) {
-      int c = current_position_(b);
-      if (!hurlFile_2_0(b, l + 1)) break;
-      if (!empty_element_parsed_guard_(b, "hurlFile_2", c)) break;
-    }
-    return true;
-  }
-
-  // COMMENT | WHITE_SPACE
-  private static boolean hurlFile_2_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "hurlFile_2_0")) return false;
-    boolean r;
-    r = COMMENT(b, l + 1);
-    if (!r) r = WHITE_SPACE(b, l + 1);
-    return r;
-  }
-
   /* ********************************************************** */
-  // GET_METHOD | POST_METHOD | PUT_METHOD | DELETE_METHOD
-  public static boolean method(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "method")) return false;
-    boolean r;
-    Marker m = enter_section_(b, l, _NONE_, METHOD, "<method>");
-    r = GET_METHOD(b, l + 1);
-    if (!r) r = POST_METHOD(b, l + 1);
-    if (!r) r = PUT_METHOD(b, l + 1);
-    if (!r) r = DELETE_METHOD(b, l + 1);
-    exit_section_(b, l, m, r, false, null);
-    return r;
-  }
-
-  /* ********************************************************** */
-  // method url (WHITE_SPACE)*
+  // !<<eof>> METHOD (URL|VAR) (ANY|VAR)*
   public static boolean request(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "request")) return false;
-    boolean r;
+    boolean r, p;
     Marker m = enter_section_(b, l, _NONE_, REQUEST, "<request>");
-    r = method(b, l + 1);
-    r = r && url(b, l + 1);
+    r = request_0(b, l + 1);
+    r = r && consumeToken(b, METHOD);
     r = r && request_2(b, l + 1);
+    p = r; // pin = 3
+    r = r && request_3(b, l + 1);
+    exit_section_(b, l, m, r, p, HurlParser::request_recover);
+    return r || p;
+  }
+
+  // !<<eof>>
+  private static boolean request_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "request_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b, l, _NOT_);
+    r = !eof(b, l + 1);
     exit_section_(b, l, m, r, false, null);
     return r;
   }
 
-  // (WHITE_SPACE)*
+  // URL|VAR
   private static boolean request_2(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "request_2")) return false;
+    boolean r;
+    r = consumeToken(b, URL);
+    if (!r) r = consumeToken(b, VAR);
+    return r;
+  }
+
+  // (ANY|VAR)*
+  private static boolean request_3(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "request_3")) return false;
     while (true) {
       int c = current_position_(b);
-      if (!request_2_0(b, l + 1)) break;
-      if (!empty_element_parsed_guard_(b, "request_2", c)) break;
+      if (!request_3_0(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "request_3", c)) break;
     }
     return true;
   }
 
-  // (WHITE_SPACE)
-  private static boolean request_2_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "request_2_0")) return false;
+  // ANY|VAR
+  private static boolean request_3_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "request_3_0")) return false;
+    boolean r;
+    r = consumeToken(b, ANY);
+    if (!r) r = consumeToken(b, VAR);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // !METHOD !URL
+  static boolean request_recover(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "request_recover")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = WHITE_SPACE(b, l + 1);
+    r = request_recover_0(b, l + 1);
+    r = r && request_recover_1(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }
 
-  /* ********************************************************** */
-  // "regexp:https?://.*"
-  public static boolean url(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "url")) return false;
+  // !METHOD
+  private static boolean request_recover_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "request_recover_0")) return false;
     boolean r;
-    Marker m = enter_section_(b, l, _NONE_, URL, "<url>");
-    r = consumeToken(b, "regexp:https?://.*");
+    Marker m = enter_section_(b, l, _NOT_);
+    r = !consumeToken(b, METHOD);
+    exit_section_(b, l, m, r, false, null);
+    return r;
+  }
+
+  // !URL
+  private static boolean request_recover_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "request_recover_1")) return false;
+    boolean r;
+    Marker m = enter_section_(b, l, _NOT_);
+    r = !consumeToken(b, URL);
     exit_section_(b, l, m, r, false, null);
     return r;
   }

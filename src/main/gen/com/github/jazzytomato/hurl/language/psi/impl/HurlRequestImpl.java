@@ -29,20 +29,14 @@ public class HurlRequestImpl extends ASTWrapperPsiElement implements HurlRequest
 
   @Override
   @NotNull
-  public List<HurlWhiteSpace> getWhiteSpaceList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, HurlWhiteSpace.class);
+  public PsiElement getMethod() {
+    return findNotNullChildByType(METHOD);
   }
 
   @Override
-  @NotNull
-  public HurlMethod getMethod() {
-    return findNotNullChildByClass(HurlMethod.class);
-  }
-
-  @Override
-  @NotNull
-  public HurlUrl getUrl() {
-    return findNotNullChildByClass(HurlUrl.class);
+  @Nullable
+  public PsiElement getUrl() {
+    return findChildByType(URL);
   }
 
 }

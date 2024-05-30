@@ -37,8 +37,7 @@ public class HurlSyntaxHighlighter extends SyntaxHighlighterBase {
 
     @Override
     public TextAttributesKey @NotNull [] getTokenHighlights(IElementType tokenType) {
-        if (tokenType.equals(HurlTypes.GET_METHOD) || tokenType.equals(HurlTypes.POST_METHOD) ||
-                tokenType.equals(HurlTypes.PUT_METHOD) || tokenType.equals(HurlTypes.DELETE_METHOD)) {
+        if (tokenType.equals(HurlTypes.METHOD)) {
             return METHOD_KEYS;
         }
         if (tokenType.equals(HurlTypes.URL)) {

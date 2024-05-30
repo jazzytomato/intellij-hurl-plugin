@@ -15,7 +15,7 @@ public class HurlGutterRunLineMarkerProvider extends RunLineMarkerContributor im
     @Nullable
     @Override
     public Info getInfo(@NotNull PsiElement element) {
-        if (element.getNode().getElementType() == HurlTypes.GET_METHOD || element.getNode().getElementType() == HurlTypes.POST_METHOD || element.getNode().getElementType() == HurlTypes.PUT_METHOD || element.getNode().getElementType() == HurlTypes.DELETE_METHOD) {
+        if (element.getNode().getElementType() == HurlTypes.METHOD) {
             return new Info(AllIcons.RunConfigurations.TestState.Run, it -> "Run request", ExecutorAction.getActions());
         }
         return null;

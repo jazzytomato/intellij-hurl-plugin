@@ -36,7 +36,8 @@ class HurlLexer implements FlexLexer {
   private static final int [] ZZ_CMAP_TOP = zzUnpackcmap_top();
 
   private static final String ZZ_CMAP_TOP_PACKED_0 =
-    "\1\0\37\u0100\1\u0200\u10df\u0100";
+    "\1\0\25\u0100\1\u0200\11\u0100\1\u0300\17\u0100\1\u0400\247\u0100"+
+    "\10\u0500\u1020\u0100";
 
   private static int [] zzUnpackcmap_top() {
     int [] result = new int[4352];
@@ -64,15 +65,17 @@ class HurlLexer implements FlexLexer {
   private static final int [] ZZ_CMAP_BLOCKS = zzUnpackcmap_blocks();
 
   private static final String ZZ_CMAP_BLOCKS_PACKED_0 =
-    "\11\0\1\1\1\2\2\3\1\4\22\0\1\1\2\0"+
-    "\1\5\2\0\1\6\4\0\1\7\1\0\2\10\1\11"+
-    "\12\12\1\13\2\0\1\6\1\0\1\14\1\0\3\15"+
-    "\1\16\1\17\1\15\1\20\4\15\1\21\2\15\1\22"+
-    "\1\23\2\15\1\24\1\25\1\26\5\15\4\0\1\27"+
-    "\1\0\32\15\12\0\1\3\u01a2\0\2\3\326\0";
+    "\11\0\1\1\4\2\22\0\1\1\2\0\1\3\13\0"+
+    "\1\4\12\0\1\5\6\0\1\6\1\0\1\7\1\10"+
+    "\1\11\1\0\1\12\1\13\1\14\2\0\1\15\1\0"+
+    "\1\16\1\17\1\20\2\0\1\21\1\22\1\23\22\0"+
+    "\1\24\7\0\1\25\2\0\1\26\1\27\6\0\1\30"+
+    "\1\0\1\31\7\0\1\32\32\0\1\33\u01df\0\1\33"+
+    "\177\0\13\33\35\0\2\32\5\0\1\33\57\0\1\33"+
+    "\240\0\1\33\377\0\u0100\34";
 
   private static int [] zzUnpackcmap_blocks() {
-    int [] result = new int[768];
+    int [] result = new int[1536];
     int offset = 0;
     offset = zzUnpackcmap_blocks(ZZ_CMAP_BLOCKS_PACKED_0, offset, result);
     return result;
@@ -96,12 +99,12 @@ class HurlLexer implements FlexLexer {
   private static final int [] ZZ_ACTION = zzUnpackAction();
 
   private static final String ZZ_ACTION_PACKED_0 =
-    "\1\0\1\1\1\2\2\3\1\4\5\5\2\0\4\5"+
-    "\1\0\1\5\1\6\1\5\1\7\1\0\1\5\1\10"+
-    "\1\11\1\5\2\11\1\12";
+    "\1\0\1\1\1\2\1\3\7\1\1\2\1\3\11\1"+
+    "\1\4\4\1\1\0\5\1\1\0\1\5\4\1\1\5"+
+    "\2\1\3\6\2\0\2\6";
 
   private static int [] zzUnpackAction() {
-    int [] result = new int[30];
+    int [] result = new int[49];
     int offset = 0;
     offset = zzUnpackAction(ZZ_ACTION_PACKED_0, offset, result);
     return result;
@@ -126,13 +129,16 @@ class HurlLexer implements FlexLexer {
   private static final int [] ZZ_ROWMAP = zzUnpackRowMap();
 
   private static final String ZZ_ROWMAP_PACKED_0 =
-    "\0\0\0\30\0\30\0\30\0\60\0\110\0\140\0\170"+
-    "\0\220\0\250\0\300\0\330\0\360\0\u0108\0\u0120\0\u0138"+
-    "\0\u0150\0\u0168\0\u0180\0\170\0\u0198\0\170\0\u01b0\0\u01c8"+
-    "\0\170\0\u01e0\0\u01f8\0\u0210\0\u0228\0\170";
+    "\0\0\0\35\0\72\0\127\0\164\0\221\0\256\0\313"+
+    "\0\350\0\u0105\0\u0122\0\u013f\0\u015c\0\u0179\0\u0196\0\u01b3"+
+    "\0\u01d0\0\u01ed\0\u020a\0\u0227\0\u0244\0\u0261\0\35\0\u027e"+
+    "\0\u029b\0\u02b8\0\u02d5\0\u02f2\0\u030f\0\u032c\0\u0349\0\u0366"+
+    "\0\u0383\0\u03a0\0\u030f\0\u03bd\0\u03da\0\u03f7\0\u0414\0\u03a0"+
+    "\0\u0431\0\u044e\0\u046b\0\u0488\0\u04a5\0\u04c2\0\u04df\0\u04fc"+
+    "\0\u0519";
 
   private static int [] zzUnpackRowMap() {
-    int [] result = new int[30];
+    int [] result = new int[49];
     int offset = 0;
     offset = zzUnpackRowMap(ZZ_ROWMAP_PACKED_0, offset, result);
     return result;
@@ -155,35 +161,39 @@ class HurlLexer implements FlexLexer {
   private static final int [] ZZ_TRANS = zzUnpacktrans();
 
   private static final String ZZ_TRANS_PACKED_0 =
-    "\1\2\1\3\2\4\1\5\1\6\2\2\1\7\1\2"+
-    "\1\7\2\2\1\10\1\11\1\10\1\12\2\10\1\13"+
-    "\3\10\1\7\32\0\1\4\25\0\2\6\1\0\1\6"+
-    "\1\0\23\6\10\0\1\7\1\0\1\7\2\0\13\7"+
-    "\7\0\1\14\1\10\1\0\1\10\1\15\1\0\12\10"+
-    "\1\7\7\0\1\14\1\10\1\0\1\10\1\15\1\0"+
-    "\2\10\1\16\7\10\1\7\7\0\1\14\1\10\1\0"+
-    "\1\10\1\15\1\0\2\10\1\17\7\10\1\7\7\0"+
-    "\1\14\1\10\1\0\1\10\1\15\1\0\5\10\1\20"+
-    "\3\10\1\21\1\7\7\0\2\14\1\0\1\14\1\15"+
-    "\1\0\12\14\12\0\1\22\25\0\1\14\1\10\1\0"+
-    "\1\10\1\15\1\0\4\10\1\23\5\10\1\7\7\0"+
-    "\1\14\1\10\1\0\1\10\1\15\1\0\10\10\1\24"+
-    "\1\10\1\7\7\0\1\14\1\10\1\0\1\10\1\15"+
-    "\1\0\7\10\1\25\2\10\1\7\7\0\1\14\1\10"+
-    "\1\0\1\10\1\15\1\0\10\10\1\26\1\10\1\7"+
-    "\11\0\1\27\25\0\1\14\1\10\1\0\1\10\1\15"+
-    "\1\0\2\10\1\30\7\10\1\7\7\0\1\14\1\10"+
-    "\1\0\1\10\1\15\1\0\10\10\1\31\1\10\1\7"+
-    "\10\0\1\32\1\0\1\32\2\0\12\32\10\0\1\14"+
-    "\1\10\1\0\1\10\1\15\1\0\10\10\1\33\1\10"+
-    "\1\7\10\0\1\32\1\34\1\32\1\0\1\35\12\32"+
-    "\10\0\1\14\1\10\1\0\1\10\1\15\1\0\2\10"+
-    "\1\36\7\10\1\7\10\0\1\34\1\0\1\34\1\0"+
-    "\1\35\13\34\6\0\1\35\3\0\1\35\2\0\12\35"+
-    "\1\0";
+    "\1\2\2\3\1\4\4\2\1\5\1\2\1\6\1\7"+
+    "\3\2\1\10\1\11\3\2\1\12\3\2\1\13\1\2"+
+    "\2\14\2\2\2\0\32\2\1\0\2\3\27\0\2\3"+
+    "\1\0\1\4\1\15\1\0\27\4\1\2\1\4\2\2"+
+    "\2\0\6\2\1\16\24\2\2\0\6\2\1\17\24\2"+
+    "\2\0\6\2\1\20\24\2\2\0\15\2\1\21\15\2"+
+    "\2\0\3\2\1\22\10\2\1\23\3\2\1\17\12\2"+
+    "\2\0\24\2\1\24\6\2\2\0\25\2\1\25\5\2"+
+    "\2\3\27\2\2\14\1\2\2\15\1\0\27\15\1\0"+
+    "\1\15\1\0\1\2\2\0\12\2\1\26\20\2\2\0"+
+    "\17\2\1\27\13\2\2\0\3\2\1\30\27\2\2\0"+
+    "\17\2\1\31\13\2\2\0\17\2\1\32\13\2\2\0"+
+    "\16\2\1\17\14\2\2\0\24\2\1\33\5\2\1\25"+
+    "\1\34\1\0\26\25\1\35\1\2\1\25\2\2\2\0"+
+    "\6\2\1\36\24\2\2\0\5\2\1\27\25\2\2\0"+
+    "\11\2\1\37\21\2\2\0\4\2\1\40\26\2\2\0"+
+    "\22\2\1\41\7\2\2\34\1\0\26\34\1\42\1\0"+
+    "\1\34\1\0\1\25\1\34\1\0\26\25\1\43\1\2"+
+    "\1\25\2\2\2\0\17\2\1\44\13\2\2\0\14\2"+
+    "\1\45\16\2\2\0\10\2\1\27\22\2\2\0\2\2"+
+    "\1\46\20\2\1\47\6\2\2\34\1\0\26\34\1\50"+
+    "\1\0\1\34\1\0\1\2\2\0\6\2\1\27\24\2"+
+    "\2\0\13\2\1\51\17\2\2\0\1\2\1\52\31\2"+
+    "\2\0\2\2\1\46\30\2\2\0\16\2\1\27\14\2"+
+    "\2\0\1\2\1\53\30\2\1\53\2\0\25\53\1\54"+
+    "\5\53\2\0\25\53\1\55\4\53\1\55\1\56\1\0"+
+    "\27\55\1\53\1\55\1\53\2\56\1\0\26\56\1\57"+
+    "\1\0\1\56\1\0\2\56\1\0\26\56\1\60\1\0"+
+    "\1\56\1\0\1\60\1\56\1\0\27\60\1\61\1\60"+
+    "\2\61\2\0\32\61";
 
   private static int [] zzUnpacktrans() {
-    int [] result = new int[576];
+    int [] result = new int[1334];
     int offset = 0;
     offset = zzUnpacktrans(ZZ_TRANS_PACKED_0, offset, result);
     return result;
@@ -221,11 +231,10 @@ class HurlLexer implements FlexLexer {
   private static final int [] ZZ_ATTRIBUTE = zzUnpackAttribute();
 
   private static final String ZZ_ATTRIBUTE_PACKED_0 =
-    "\1\0\3\11\7\1\2\0\4\1\1\0\4\1\1\0"+
-    "\7\1";
+    "\1\0\32\1\1\0\5\1\1\0\13\1\2\0\2\1";
 
   private static int [] zzUnpackAttribute() {
-    int [] result = new int[30];
+    int [] result = new int[49];
     int offset = 0;
     offset = zzUnpackAttribute(ZZ_ATTRIBUTE_PACKED_0, offset, result);
     return result;
@@ -547,55 +556,35 @@ class HurlLexer implements FlexLexer {
       else {
         switch (zzAction < 0 ? zzAction : ZZ_ACTION[zzAction]) {
           case 1:
-            { return TokenType.BAD_CHARACTER;
+            { return HurlTypes.ANY;
             }
           // fall through
-          case 11: break;
+          case 7: break;
           case 2:
             { return TokenType.WHITE_SPACE;
             }
           // fall through
-          case 12: break;
+          case 8: break;
           case 3:
-            { return TokenType.NEW_LINE_INDENT;
-            }
-          // fall through
-          case 13: break;
-          case 4:
             { return HurlTypes.COMMENT;
             }
           // fall through
-          case 14: break;
+          case 9: break;
+          case 4:
+            { return HurlTypes.METHOD;
+            }
+          // fall through
+          case 10: break;
           case 5:
-            { return HurlTypes.IDENTIFIER;
+            { return HurlTypes.VAR;
             }
           // fall through
-          case 15: break;
+          case 11: break;
           case 6:
-            { return HurlTypes.GET_METHOD;
-            }
-          // fall through
-          case 16: break;
-          case 7:
-            { return HurlTypes.PUT_METHOD;
-            }
-          // fall through
-          case 17: break;
-          case 8:
-            { return HurlTypes.POST_METHOD;
-            }
-          // fall through
-          case 18: break;
-          case 9:
             { return HurlTypes.URL;
             }
           // fall through
-          case 19: break;
-          case 10:
-            { return HurlTypes.DELETE_METHOD;
-            }
-          // fall through
-          case 20: break;
+          case 12: break;
           default:
             zzScanError(ZZ_NO_MATCH);
           }

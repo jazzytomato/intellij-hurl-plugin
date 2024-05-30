@@ -1,11 +1,13 @@
 package com.github.jazzytomato.hurl.run;
 
 import com.intellij.execution.actions.ConfigurationContext;
+import com.intellij.execution.actions.ConfigurationFromContext;
 import com.intellij.execution.actions.RunConfigurationProducer;
 import com.intellij.execution.configurations.ConfigurationTypeUtil;
 import com.intellij.openapi.util.Ref;
 import com.intellij.psi.PsiElement;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class HurlRunConfigurationProducer extends RunConfigurationProducer<HurlRunConfiguration> {
 
@@ -24,5 +26,10 @@ public class HurlRunConfigurationProducer extends RunConfigurationProducer<HurlR
     public boolean isConfigurationFromContext(@NotNull HurlRunConfiguration configuration, @NotNull ConfigurationContext context) {
         // Check if the configuration matches the context
         return context.getPsiLocation().getContainingFile().getName().equals(configuration.getName());
+    }
+
+    @Override
+    public @Nullable ConfigurationFromContext findOrCreateConfigurationFromContext(@NotNull ConfigurationContext context) {
+        return super.findOrCreateConfigurationFromContext(context);
     }
 }

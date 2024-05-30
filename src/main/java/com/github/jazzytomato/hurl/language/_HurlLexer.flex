@@ -25,13 +25,24 @@ import static com.github.jazzytomato.hurl.language.psi.HurlTypes.*;
 EOL=\R
 WHITE_SPACE=\s+
 
+COMMENT=#.*
+METHOD=(GET|POST|PUT|DELETE|PATCH|HEAD|OPTIONS)
+WHITE_SPACE=[ \t\n\x0B\f\r]+
+URL=(https?:"//"[^ \t\n\x0B\f\r]*)(\{\{.*}}[^ \t\n\x0B\f\r]*|[^ \t\n\x0B\f\r]*)
+VAR=\{\{.*}}
+ANY=[^ \t\n\x0B\f\r]+
 
 %%
 <YYINITIAL> {
   {WHITE_SPACE}       { return WHITE_SPACE; }
 
-  "a-zA-Z0-9_.-"      { return A-ZA-Z0-9_.-; }
 
+  {COMMENT}           { return COMMENT; }
+  {METHOD}            { return METHOD; }
+  {WHITE_SPACE}       { return WHITE_SPACE; }
+  {URL}               { return URL; }
+  {VAR}               { return VAR; }
+  {ANY}               { return ANY; }
 
 }
 

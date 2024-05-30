@@ -8,12 +8,9 @@ import com.intellij.psi.PsiElement;
 public interface HurlRequest extends PsiElement {
 
   @NotNull
-  List<HurlWhiteSpace> getWhiteSpaceList();
+  PsiElement getMethod();
 
-  @NotNull
-  HurlMethod getMethod();
-
-  @NotNull
-  HurlUrl getUrl();
+  @Nullable
+  PsiElement getUrl();
 
 }

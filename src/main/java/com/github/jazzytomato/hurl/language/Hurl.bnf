@@ -8,21 +8,18 @@
   elementTypeHolderClass="com.github.jazzytomato.hurl.language.psi.HurlTypes"
   elementTypeClass="com.github.jazzytomato.hurl.language.psi.HurlElementType"
   tokenTypeClass="com.github.jazzytomato.hurl.language.psi.HurlTokenType"
+
+  tokens = [
+      COMMENT = "regexp:#.*"
+      METHOD= "regexp:(GET|POST|PUT|DELETE|PATCH|HEAD|OPTIONS)"
+      WHITE_SPACE = 'regexp:\s+'
+      URL = 'regexp:(https?://\S*)(\{\{.*\}\}\S*|\S*)'
+      VAR = 'regexp:\{\{.*\}\}'
+      ANY = 'regexp:\S+'
+  ]
 }
 
-hurlFile ::= (COMMENT | WHITE_SPACE)* request* (COMMENT | WHITE_SPACE)*
+hurlFile ::= request*
 
-request ::= method url (WHITE_SPACE)*
-
-method ::= GET_METHOD | POST_METHOD | PUT_METHOD | DELETE_METHOD
-
-url ::= "regexp:https?://.*"
-
-COMMENT ::= "regexp:#.*"
-CRLF ::= "\n"
-WHITE_SPACE ::= "regexp:\s+"
-IDENTIFIER ::= [a-zA-Z0-9_.-]+
-GET_METHOD ::= "GET"
-POST_METHOD ::= "POST"
-PUT_METHOD ::= "PUT"
-DELETE_METHOD ::= "DELETE"
+request ::= !<<eof>> METHOD (URL|VAR) (ANY|VAR)* {pin=3 recoverWhile=request_recover}
+private request_recover ::= !METHOD !URL
