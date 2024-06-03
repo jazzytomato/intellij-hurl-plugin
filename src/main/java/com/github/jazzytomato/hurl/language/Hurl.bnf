@@ -14,12 +14,16 @@
       METHOD= "regexp:(GET|POST|PUT|DELETE|PATCH|HEAD|OPTIONS)"
       WHITE_SPACE = 'regexp:\s+'
       URL = 'regexp:(https?://\S*)(\{\{.*\}\}\S*|\S*)'
-      VAR = 'regexp:\{\{.*\}\}'
-      ANY = 'regexp:\S+'
+      IDENTIFIER = 'regexp:\w+'
+      LBRACE = 'regexp:\{'
+      RBRACE = 'regexp:\}'
+      ANY = 'regexp:\S'
   ]
 }
 
 hurlFile ::= request*
 
-request ::= !<<eof>> METHOD (URL|VAR) (ANY|VAR)* {pin=3 recoverWhile=request_recover}
+request ::= !<<eof>> METHOD (URL|varr) (varr|ANY|IDENTIFIER)* {pin=3 recoverWhile=request_recover}
 private request_recover ::= !METHOD !URL
+
+varr ::= LBRACE LBRACE IDENTIFIER RBRACE RBRACE {pin=1}

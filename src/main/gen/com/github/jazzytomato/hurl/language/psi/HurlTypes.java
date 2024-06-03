@@ -9,18 +9,24 @@ import com.github.jazzytomato.hurl.language.psi.impl.*;
 public interface HurlTypes {
 
   IElementType REQUEST = new HurlElementType("REQUEST");
+  IElementType VARR = new HurlElementType("VARR");
 
   IElementType ANY = new HurlTokenType("ANY");
   IElementType COMMENT = new HurlTokenType("COMMENT");
+  IElementType IDENTIFIER = new HurlTokenType("IDENTIFIER");
+  IElementType LBRACE = new HurlTokenType("LBRACE");
   IElementType METHOD = new HurlTokenType("METHOD");
+  IElementType RBRACE = new HurlTokenType("RBRACE");
   IElementType URL = new HurlTokenType("URL");
-  IElementType VAR = new HurlTokenType("VAR");
 
   class Factory {
     public static PsiElement createElement(ASTNode node) {
       IElementType type = node.getElementType();
       if (type == REQUEST) {
         return new HurlRequestImpl(node);
+      }
+      else if (type == VARR) {
+        return new HurlVarrImpl(node);
       }
       throw new AssertionError("Unknown element type: " + type);
     }

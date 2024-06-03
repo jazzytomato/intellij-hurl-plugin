@@ -28,9 +28,11 @@ WHITE_SPACE=\s+
 COMMENT=#.*
 METHOD=(GET|POST|PUT|DELETE|PATCH|HEAD|OPTIONS)
 WHITE_SPACE=[ \t\n\x0B\f\r]+
-URL=(https?:"//"[^ \t\n\x0B\f\r]*)(\{\{.*}}[^ \t\n\x0B\f\r]*|[^ \t\n\x0B\f\r]*)
-VAR=\{\{.*}}
-ANY=[^ \t\n\x0B\f\r]+
+URL=(https?:"//"[^ \t\n\x0B\f\r]*)(\{\{.*\}\}[^ \t\n\x0B\f\r]*|[^ \t\n\x0B\f\r]*)
+IDENTIFIER=[a-zA-Z_0-9]+
+LBRACE=\{
+RBRACE=\}
+ANY=[^ \t\n\x0B\f\r]
 
 %%
 <YYINITIAL> {
@@ -41,7 +43,9 @@ ANY=[^ \t\n\x0B\f\r]+
   {METHOD}            { return METHOD; }
   {WHITE_SPACE}       { return WHITE_SPACE; }
   {URL}               { return URL; }
-  {VAR}               { return VAR; }
+  {IDENTIFIER}        { return IDENTIFIER; }
+  {LBRACE}            { return LBRACE; }
+  {RBRACE}            { return RBRACE; }
   {ANY}               { return ANY; }
 
 }

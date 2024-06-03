@@ -11,6 +11,10 @@ public class HurlVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitVarr(@NotNull HurlVarr o) {
+    visitPsiElement(o);
+  }
+
   public void visitPsiElement(@NotNull PsiElement o) {
     visitElement(o);
   }

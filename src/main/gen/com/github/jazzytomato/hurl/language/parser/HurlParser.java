@@ -48,7 +48,7 @@ public class HurlParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // !<<eof>> METHOD (URL|VAR) (ANY|VAR)*
+  // !<<eof>> METHOD (URL|varr) (varr|ANY|IDENTIFIER)*
   public static boolean request(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "request")) return false;
     boolean r, p;
@@ -72,16 +72,16 @@ public class HurlParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // URL|VAR
+  // URL|varr
   private static boolean request_2(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "request_2")) return false;
     boolean r;
     r = consumeToken(b, URL);
-    if (!r) r = consumeToken(b, VAR);
+    if (!r) r = varr(b, l + 1);
     return r;
   }
 
-  // (ANY|VAR)*
+  // (varr|ANY|IDENTIFIER)*
   private static boolean request_3(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "request_3")) return false;
     while (true) {
@@ -92,12 +92,13 @@ public class HurlParser implements PsiParser, LightPsiParser {
     return true;
   }
 
-  // ANY|VAR
+  // varr|ANY|IDENTIFIER
   private static boolean request_3_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "request_3_0")) return false;
     boolean r;
-    r = consumeToken(b, ANY);
-    if (!r) r = consumeToken(b, VAR);
+    r = varr(b, l + 1);
+    if (!r) r = consumeToken(b, ANY);
+    if (!r) r = consumeToken(b, IDENTIFIER);
     return r;
   }
 
@@ -131,6 +132,19 @@ public class HurlParser implements PsiParser, LightPsiParser {
     r = !consumeToken(b, URL);
     exit_section_(b, l, m, r, false, null);
     return r;
+  }
+
+  /* ********************************************************** */
+  // LBRACE LBRACE IDENTIFIER RBRACE RBRACE
+  public static boolean varr(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "varr")) return false;
+    if (!nextTokenIs(b, LBRACE)) return false;
+    boolean r, p;
+    Marker m = enter_section_(b, l, _NONE_, VARR, null);
+    r = consumeTokens(b, 1, LBRACE, LBRACE, IDENTIFIER, RBRACE, RBRACE);
+    p = r; // pin = 1
+    exit_section_(b, l, m, r, p, null);
+    return r || p;
   }
 
 }
