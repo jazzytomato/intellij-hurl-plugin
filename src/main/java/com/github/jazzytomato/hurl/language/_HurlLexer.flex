@@ -25,28 +25,37 @@ import static com.github.jazzytomato.hurl.language.psi.HurlTypes.*;
 EOL=\R
 WHITE_SPACE=\s+
 
+STRING=\"([^\"\\]|\\.)*\"
+NUMBER=(\+|\-)?[:digit:]*
 COMMENT=#.*
 METHOD=(GET|POST|PUT|DELETE|PATCH|HEAD|OPTIONS)
 WHITE_SPACE=[ \t\n\x0B\f\r]+
 URL=(https?:"//"[^ \t\n\x0B\f\r]*)(\{\{.*\}\}[^ \t\n\x0B\f\r]*|[^ \t\n\x0B\f\r]*)
 IDENTIFIER=[a-zA-Z_0-9]+
-LBRACE=\{
-RBRACE=\}
-ANY=[^ \t\n\x0B\f\r]
+JSON_ID=[:letter:][a-zA-Z_0-9]*
 
 %%
 <YYINITIAL> {
   {WHITE_SPACE}       { return WHITE_SPACE; }
 
+  "true|false"        { return BOOLEAN; }
+  "null"              { return NULL; }
+  ","                 { return COMMA; }
+  ":"                 { return COLON; }
+  "["                 { return LBRACKET; }
+  "]"                 { return RBRACKET; }
+  "{"                 { return LBRACE; }
+  "}"                 { return RBRACE; }
+  "ANY"               { return ANY; }
 
+  {STRING}            { return STRING; }
+  {NUMBER}            { return NUMBER; }
   {COMMENT}           { return COMMENT; }
   {METHOD}            { return METHOD; }
   {WHITE_SPACE}       { return WHITE_SPACE; }
   {URL}               { return URL; }
   {IDENTIFIER}        { return IDENTIFIER; }
-  {LBRACE}            { return LBRACE; }
-  {RBRACE}            { return RBRACE; }
-  {ANY}               { return ANY; }
+  {JSON_ID}           { return JSON_ID; }
 
 }
 

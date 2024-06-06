@@ -10,20 +10,44 @@
   tokenTypeClass="com.github.jazzytomato.hurl.language.psi.HurlTokenType"
 
   tokens = [
+      BOOLEAN = "true|false"
+      NULL = "null"
+//      ALPHANUM = "[A-Za-z0-9]"
+      STRING = "regexp:\"([^\"\\]|\\.)*\""
+//      DIGIT = "regexp:[0-9]"
+//      HEXDIGIT = "regexp:[0-9A-Fa-f]"
+//      INTEGER = "DIGIT+"
+      NUMBER = "regexp:(\+|\-)?\p{Digit}*"
+      COMMA = ","
+      COLON = ":"
       COMMENT = "regexp:#.*"
       METHOD= "regexp:(GET|POST|PUT|DELETE|PATCH|HEAD|OPTIONS)"
       WHITE_SPACE = 'regexp:\s+'
       URL = 'regexp:(https?://\S*)(\{\{.*\}\}\S*|\S*)'
       IDENTIFIER = 'regexp:\w+'
-      LBRACE = 'regexp:\{'
-      RBRACE = 'regexp:\}'
-      ANY = 'regexp:\S'
+      JSON_ID = "regexp:\p{Alpha}\w*"
+      LBRACKET = '['
+      RBRACKET = ']'
+      LBRACE = '{'
+      RBRACE = '}'
   ]
 }
 
 hurlFile ::= request*
 
-request ::= !<<eof>> METHOD (URL|varr) (varr|ANY|IDENTIFIER)* {pin=3 recoverWhile=request_recover}
+request ::= !<<eof>> METHOD (URL|varr) (varr|STRING|IDENTIFIER|COLON|NUMBER)* body? (varr|STRING|IDENTIFIER|COLON|NUMBER)* {pin=3 recoverWhile=request_recover}
 private request_recover ::= !METHOD !URL
 
-varr ::= LBRACE LBRACE IDENTIFIER RBRACE RBRACE {pin=1}
+body ::= json | STRING
+
+json ::= json_array | json_object {hooks=[wsBinders="null, null"]}
+json_value ::= STRING | NUMBER | BOOLEAN | NULL | json {name="json_value" }//hooks=[leftBinder="GREEDY_LEFT_BINDER"]}
+
+json_array ::= '[' [!']' json_item (!']' ',' json_item) *] ']' {pin(".*")=1 extends=json}
+private json_item ::= json_value {recoverWhile=recover}
+json_object ::= '{' [!'}' !'{' json_prop (!'}' ',' json_prop) *] '}' {pin(".*")=1 extends=json}
+json_prop ::= [] json_name ':' json_value {pin=1 recoverWhile=recover} // remove [] to make NAME mandatory
+json_name ::= JSON_ID | STRING {name="json_name" }//hooks=[rightBinder="GREEDY_RIGHT_BINDER"]}
+private recover ::= !(',' | ']' | '}' | '[' | '{')
+
+varr ::= LBRACE LBRACE IDENTIFIER RBRACE RBRACE

@@ -39,6 +39,9 @@
                 language="Hurl"
                 implementationClass="com.github.jazzytomato.hurl.run.HurlGutterRunLineMarkerProvider"/>
 
+        <multiHostInjector
+                implementation="com.github.jazzytomato.hurl.language.JsonToHurlInjector"/>
+
     </extensions>
 
     <applicationListeners>

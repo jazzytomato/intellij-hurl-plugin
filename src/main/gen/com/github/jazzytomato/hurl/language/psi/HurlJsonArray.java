@@ -5,18 +5,9 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface HurlRequest extends PsiElement {
-
-  @Nullable
-  HurlBody getBody();
+public interface HurlJsonArray extends HurlJson {
 
   @NotNull
-  List<HurlVarr> getVarrList();
-
-  @NotNull
-  PsiElement getMethod();
-
-  @Nullable
-  PsiElement getUrl();
+  List<HurlJsonValue> getJsonValueList();
 
 }

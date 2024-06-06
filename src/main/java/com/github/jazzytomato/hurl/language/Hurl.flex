@@ -18,26 +18,35 @@ import com.intellij.psi.TokenType;
 EOL=\R
 WHITE_SPACE=\s+
 
+STRING=\"([^\"\\]|\\.)*\"
+NUMBER=(\+|\-)?[:digit:]*
 COMMENT=#.*
 METHOD=(GET|POST|PUT|DELETE|PATCH|HEAD|OPTIONS)
 //WHITE_SPACE=[ \t\n\x0B\f\r]+
 URL=(https?:"//"[^ \t\n\x0B\f\r]*)(\{\{.*\}\}[^ \t\n\x0B\f\r]*|[^ \t\n\x0B\f\r]*)
 IDENTIFIER=[a-zA-Z_0-9]+
-LBRACE=\{
-RBRACE=\}
-ANY=[^ \t\n\x0B\f\r]
+JSON_ID=[:letter:][a-zA-Z_0-9]*
 
 %%
 
 <YYINITIAL> {
  {WHITE_SPACE}                       { return TokenType.WHITE_SPACE; }
+
+  "true|false"        { return HurlTypes.BOOLEAN; }
+  "null"              { return HurlTypes.NULL; }
+  ","                 { return HurlTypes.COMMA; }
+  ":"                 { return HurlTypes.COLON; }
+  "{"                 { return HurlTypes.LBRACE; }
+  "}"                 { return HurlTypes.RBRACE; }
+  "["                 { return HurlTypes.LBRACKET; }
+  "]"                 { return HurlTypes.RBRACKET; }
+
+ {STRING}                            { return HurlTypes.STRING; }
+ {NUMBER}                            { return HurlTypes.NUMBER; }
  {COMMENT}                           { return HurlTypes.COMMENT; }
  {METHOD}                            { return HurlTypes.METHOD; }
  {URL}                               { return HurlTypes.URL; }
- {EOL}                               { return TokenType.NEW_LINE_INDENT; }
  {IDENTIFIER}                        { return HurlTypes.IDENTIFIER; }
- {LBRACE}                            { return HurlTypes.LBRACE; }
- {RBRACE}                            { return HurlTypes.RBRACE; }
- {ANY}                               { return HurlTypes.ANY; }
+ {JSON_ID}                           { return HurlTypes.JSON_ID; }
 }
 [^]                                             { return TokenType.BAD_CHARACTER; }

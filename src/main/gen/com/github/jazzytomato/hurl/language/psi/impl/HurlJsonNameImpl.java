@@ -11,14 +11,14 @@ import static com.github.jazzytomato.hurl.language.psi.HurlTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import com.github.jazzytomato.hurl.language.psi.*;
 
-public class HurlVarrImpl extends ASTWrapperPsiElement implements HurlVarr {
+public class HurlJsonNameImpl extends ASTWrapperPsiElement implements HurlJsonName {
 
-  public HurlVarrImpl(@NotNull ASTNode node) {
+  public HurlJsonNameImpl(@NotNull ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull HurlVisitor visitor) {
-    visitor.visitVarr(this);
+    visitor.visitJsonName(this);
   }
 
   @Override
@@ -28,9 +28,15 @@ public class HurlVarrImpl extends ASTWrapperPsiElement implements HurlVarr {
   }
 
   @Override
-  @NotNull
-  public PsiElement getIdentifier() {
-    return findNotNullChildByType(IDENTIFIER);
+  @Nullable
+  public PsiElement getJsonId() {
+    return findChildByType(JSON_ID);
+  }
+
+  @Override
+  @Nullable
+  public PsiElement getString() {
+    return findChildByType(STRING);
   }
 
 }

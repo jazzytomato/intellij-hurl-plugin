@@ -28,6 +28,12 @@ public class HurlRequestImpl extends ASTWrapperPsiElement implements HurlRequest
   }
 
   @Override
+  @Nullable
+  public HurlBody getBody() {
+    return findChildByClass(HurlBody.class);
+  }
+
+  @Override
   @NotNull
   public List<HurlVarr> getVarrList() {
     return PsiTreeUtil.getChildrenOfTypeAsList(this, HurlVarr.class);
