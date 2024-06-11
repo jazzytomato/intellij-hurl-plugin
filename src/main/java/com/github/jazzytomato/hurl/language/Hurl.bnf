@@ -10,44 +10,152 @@
   tokenTypeClass="com.github.jazzytomato.hurl.language.psi.HurlTokenType"
 
   tokens = [
-      BOOLEAN = "true|false"
+      WHITE_SPACE = 'regexp:\s+'
       NULL = "null"
-//      ALPHANUM = "[A-Za-z0-9]"
+      NUMBER = "regexp:(\+|\-)?\p{Digit}+"
+      ALPHANUM = "regexp:[A-Za-z0-9]"
       STRING = "regexp:\"([^\"\\]|\\.)*\""
-//      DIGIT = "regexp:[0-9]"
-//      HEXDIGIT = "regexp:[0-9A-Fa-f]"
-//      INTEGER = "DIGIT+"
-      NUMBER = "regexp:(\+|\-)?\p{Digit}*"
+      DIGIT = "regexp:[0-9]"
+      BOOLEAN = "regexp:(true|false)"
+      UNDERSCORE = "_"
+      DASH = '-'
+      DOT = '.'
+      AT = '@'
+      BANG = '!'
+      BACKSLASH = '\\'
+      SLASH = '/'
+      DOLLAR = '$'
+      QMARK = '?'
+      EQ = '='
+      AMPERSAND = '&'
+      PERCENT = '%'
       COMMA = ","
       COLON = ":"
+      SEMI = ";"
+      PLUS = "+"
+      GREATER = ">"
+        LESS = "<"
+      //HEXDIGIT = "regexp:[0-9A-Fa-f]"
+      //KEY_STRING_TEXT = "regexp:([A-Za-z0-9]|_|-|.|\[|\]|@|\$)+"
       COMMENT = "regexp:#.*"
       METHOD= "regexp:(GET|POST|PUT|DELETE|PATCH|HEAD|OPTIONS)"
-      WHITE_SPACE = 'regexp:\s+'
-      URL = 'regexp:(https?://\S*)(\{\{.*\}\}\S*|\S*)'
-      IDENTIFIER = 'regexp:\w+'
-      JSON_ID = "regexp:\p{Alpha}\w*"
+      URL = 'regexp:(\{\{.*\}\})*(https?://\S*)(\{\{.*\}\}\S*|\S*)'
+      HTTP_VERSION = "regexp:(HTTP/1.0|HTTP/1.1|HTTP/2|HTTP)"
+//      IDENTIFIER = 'regexp:\w+'
+//      JSON_ID = "regexp:\p{Alpha}\w*"
       LBRACKET = '['
       RBRACKET = ']'
       LBRACE = '{'
       RBRACE = '}'
+      LPAR = '('
+      RPAR = ')'
   ]
 }
 
-hurlFile ::= request*
+//hurlFile ::= request*
+hurlFile ::= entry*
+entry ::= request response?
 
-request ::= !<<eof>> METHOD (URL|varr) (varr|STRING|IDENTIFIER|COLON|NUMBER)* body? (varr|STRING|IDENTIFIER|COLON|NUMBER)* {pin=3 recoverWhile=request_recover}
-private request_recover ::= !METHOD !URL
+request ::= !<<eof>> METHOD url_or_template header* request-section* body? {pin=3 recoverWhile=request_recover}
+private request_recover ::= !response
+url_or_template ::= (URL | template) (NUMBER|DASH|COMMA|ALPHANUM|SLASH|BACKSLASH|AMPERSAND|EQ|QMARK|PERCENT|DOLLAR|BOOLEAN|template)*  {pin=2 recoverWhile=recover_url_or_template}
+private recover_url_or_template ::= !(header | request-section | body | response)
+
+request-section ::=  basic-auth-section | query-string-params-section | form-params-section | multipart-form-data-section | cookies-section | options-section
+basic-auth-section ::= '[BasicAuth]' key-value*
+query-string-params-section ::= '[QueryStringParams]' key-value*
+form-params-section ::= '[FormParams]' key-value*
+multipart-form-data-section ::= '[MultipartFormData]' multipart-form-data-param*
+multipart-form-data-param ::= key-value | file-param
+file-param ::= key-string COLON file-value
+file-value ::= 'file,' filename+ ';' file-contenttype?
+filename ::= (ALPHANUM|UNDERSCORE|SLASH|BACKSLASH|DOT|LBRACKET|RBRACKET|LBRACE|RBRACE)+ | template
+file-contenttype ::= (ALPHANUM | '/' | '-' | '+')+
+cookies-section ::= '[Cookies]' key-value*
+options-section ::= '[Options]' key-value* //todo
+
+response ::= HTTP_VERSION NUMBER header* response-section* body?
+//version ::=  'HTTP/1.0'|'HTTP/1.1'|'HTTP/2'|'HTTP'
+//status ::= 'regexp[0-9]+'
+header ::= key-value
+key-value ::= key-string COLON value-string
+key-string ::= (key-string-content | template)*
+key-string-content ::= (key-string-text | key-string-escaped-char)+
+key-string-text ::= (ALPHANUM|UNDERSCORE|DASH|DOT|LBRACKET|RBRACKET|AT|DOLLAR)+
+key-string-escaped-char ::= '\' ('#'|':'|'\'|'\b'|'\f'|'\n'|'\r'|'\t'|'\u')
+value-string ::= STRING | ( value-string-content | template)+
+value-string-content ::= ALPHANUM|NUMBER|BACKSLASH|SLASH|UNDERSCORE|DASH|DOT|LBRACKET|RBRACKET|AT|DOLLAR|BANG
+//private recover_value-string ::= !(COMMENT|CRLF)+
+//value-string-content ::= (!(COMMENT|CRLF))+
+response-section ::= capture-section | asserts-section
+capture-section ::= '[Captures]' capture*
+capture ::= key-string COLON query filter*
+query ::=  status-query | url-query | header-query | certificate-query | cookie-query | body-query | xpath-query | jsonpath-query | regex-query | variable-query | duration-query | bytes-query | sha256-query | md5-query
+status-query ::= 'status'
+url-query ::= 'url'
+header-query ::= 'header' STRING
+certificate-query ::= 'certificate' ('Subject'|'Issuer'|'Start-Date'|'Expire-Date'|'Serial-Number')
+cookie-query ::= 'cookie' STRING
+body-query ::= 'body'
+xpath-query ::= 'xpath' STRING
+jsonpath-query ::= 'jsonpath' STRING
+regex-query ::= 'regex' STRING
+variable-query ::= 'variable' STRING
+duration-query ::= 'duration'
+sha256-query ::= 'sha256'
+md5-query ::= 'md5'
+bytes-query ::= 'bytes'
+asserts-section ::= '[Asserts]' assert*
+assert ::= query filter* predicate
+predicate ::=  'not'? (equal-predicate|not-equal-predicate|greater-predicate|greater-or-equal-predicate|less-predicate|less-or-equal-predicate|start-with-predicate|end-with-predicate|contain-predicate|match-predicate|exist-predicate|is-empty-predicate|include-predicate|integer-predicate|float-predicate|boolean-predicate|string-predicate|collection-predicate|date-predicate|iso-date-predicate)
+equal-predicate ::= EQ EQ predicate-value
+not-equal-predicate ::= BANG EQ predicate-value
+greater-predicate ::= GREATER predicate-value
+greater-or-equal-predicate ::= GREATER EQ predicate-value
+less-predicate ::= LESS predicate-value
+less-or-equal-predicate ::= LESS EQ predicate-value
+start-with-predicate ::= 'startsWith' STRING
+end-with-predicate ::= 'endsWith' STRING
+contain-predicate ::= 'contains' STRING
+match-predicate ::= 'matches' STRING
+exist-predicate ::= 'exists'
+is-empty-predicate ::= 'isEmpty'
+include-predicate ::= 'includes' predicate-value
+integer-predicate ::= 'isInteger'
+float-predicate ::= 'isFloat'
+boolean-predicate ::= 'isBoolean'
+string-predicate ::= 'isString'
+collection-predicate ::= 'isCollection'
+date-predicate ::= 'isDate'
+iso-date-predicate ::= 'isIsoDate'
+
+predicate-value ::= BOOLEAN|STRING|NULL|NUMBER|oneline-base64|oneline-file|oneline-hex|template
+oneline-base64 ::= 'base64,' (ALPHANUM|PLUS|DASH|EQ)* SEMI
+oneline-file ::= 'file,' filename SEMI
+oneline-hex ::= 'hex,' ALPHANUM* SEMI
+
+
+
+template ::= LBRACE LBRACE ((ALPHANUM | '_' | '-')+ | filter) RBRACE RBRACE
+
+filter ::= 'count' | 'daysAfterNow' | 'daysBeforeNow' | 'decode' | 'format' | 'htmlEscape' | 'htmlUnescape' | 'toDate' | 'toInt' | 'urlDecode' | 'urlEncode' | jsonpath-filter | nth-filter | regex-filter | replace-filter | split-filter | xpath-filter
+jsonpath-filter ::= 'jsonpath' STRING
+nth-filter ::= 'nth' NUMBER
+regex-filter ::= 'regex' (STRING | regex)
+replace-filter ::= 'replace' (STRING | regex) STRING
+split-filter ::= 'split' STRING
+xpath-filter ::= 'xpath' STRING
+
+regex ::= '/' regex-content '/'
+regex-content ::= (!('/' | '\\/'))+
+
 
 body ::= json | STRING
-
 json ::= json_array | json_object {hooks=[wsBinders="null, null"]}
-json_value ::= STRING | NUMBER | BOOLEAN | NULL | json {name="json_value" }//hooks=[leftBinder="GREEDY_LEFT_BINDER"]}
-
-json_array ::= '[' [!']' json_item (!']' ',' json_item) *] ']' {pin(".*")=1 extends=json}
-private json_item ::= json_value {recoverWhile=recover}
+json_value ::= STRING | NUMBER | BOOLEAN | NULL | json
+json_array ::= LBRACKET [!RBRACKET json_item (!RBRACKET ',' json_item) *] RBRACKET {pin(".*")=1 extends=json}
+private json_item ::= json_value {recoverWhile=recover_json}
 json_object ::= '{' [!'}' !'{' json_prop (!'}' ',' json_prop) *] '}' {pin(".*")=1 extends=json}
-json_prop ::= [] json_name ':' json_value {pin=1 recoverWhile=recover} // remove [] to make NAME mandatory
-json_name ::= JSON_ID | STRING {name="json_name" }//hooks=[rightBinder="GREEDY_RIGHT_BINDER"]}
-private recover ::= !(',' | ']' | '}' | '[' | '{')
-
-varr ::= LBRACE LBRACE IDENTIFIER RBRACE RBRACE
+json_prop ::= [] json_name ':' json_value {pin=1 recoverWhile=recover_json} // remove [] to make NAME mandatory
+json_name ::= ALPHANUM | STRING {name="json_name" }//hooks=[rightBinder="GREEDY_RIGHT_BINDER"]}
+private recover_json ::= !(',' | ']' | '}' | '[' | '{')
