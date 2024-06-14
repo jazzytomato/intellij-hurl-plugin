@@ -11,6 +11,48 @@ public interface HurlBody extends PsiElement {
   HurlJson getJson();
 
   @Nullable
+  HurlMultilineGraphqlString getMultilineGraphqlString();
+
+  @Nullable
+  HurlMultilineJsonString getMultilineJsonString();
+
+  @Nullable
+  HurlMultilineString getMultilineString();
+
+  @Nullable
+  HurlMultilineXmlString getMultilineXmlString();
+
+  @Nullable
+  HurlOnelineBase64 getOnelineBase64();
+
+  @Nullable
+  HurlOnelineFile getOnelineFile();
+
+  @Nullable
+  HurlOnelineHex getOnelineHex();
+
+  @Nullable
+  HurlOnelineString getOnelineString();
+
+  @Nullable
+  HurlXml getXml();
+
+  @Nullable
+  PsiElement getAlphanum();
+
+  @Nullable
+  PsiElement getAny();
+
+  @Nullable
+  PsiElement getIdentifier();
+
+  @Nullable
+  PsiElement getJsonId();
+
+  @Nullable
+  PsiElement getNumber();
+
+  @Nullable
   PsiElement getString();
 
 }

@@ -45,4 +45,10 @@ public class HurlJsonValueImpl extends ASTWrapperPsiElement implements HurlJsonV
     return findChildByType(STRING);
   }
 
+  @Override
+  @Nullable
+  public PsiElement getTemplate() {
+    return findChildByType(TEMPLATE);
+  }
+
 }

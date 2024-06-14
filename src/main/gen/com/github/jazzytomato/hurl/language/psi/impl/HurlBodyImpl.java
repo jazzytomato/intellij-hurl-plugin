@@ -35,6 +35,90 @@ public class HurlBodyImpl extends ASTWrapperPsiElement implements HurlBody {
 
   @Override
   @Nullable
+  public HurlMultilineGraphqlString getMultilineGraphqlString() {
+    return findChildByClass(HurlMultilineGraphqlString.class);
+  }
+
+  @Override
+  @Nullable
+  public HurlMultilineJsonString getMultilineJsonString() {
+    return findChildByClass(HurlMultilineJsonString.class);
+  }
+
+  @Override
+  @Nullable
+  public HurlMultilineString getMultilineString() {
+    return findChildByClass(HurlMultilineString.class);
+  }
+
+  @Override
+  @Nullable
+  public HurlMultilineXmlString getMultilineXmlString() {
+    return findChildByClass(HurlMultilineXmlString.class);
+  }
+
+  @Override
+  @Nullable
+  public HurlOnelineBase64 getOnelineBase64() {
+    return findChildByClass(HurlOnelineBase64.class);
+  }
+
+  @Override
+  @Nullable
+  public HurlOnelineFile getOnelineFile() {
+    return findChildByClass(HurlOnelineFile.class);
+  }
+
+  @Override
+  @Nullable
+  public HurlOnelineHex getOnelineHex() {
+    return findChildByClass(HurlOnelineHex.class);
+  }
+
+  @Override
+  @Nullable
+  public HurlOnelineString getOnelineString() {
+    return findChildByClass(HurlOnelineString.class);
+  }
+
+  @Override
+  @Nullable
+  public HurlXml getXml() {
+    return findChildByClass(HurlXml.class);
+  }
+
+  @Override
+  @Nullable
+  public PsiElement getAlphanum() {
+    return findChildByType(ALPHANUM);
+  }
+
+  @Override
+  @Nullable
+  public PsiElement getAny() {
+    return findChildByType(ANY);
+  }
+
+  @Override
+  @Nullable
+  public PsiElement getIdentifier() {
+    return findChildByType(IDENTIFIER);
+  }
+
+  @Override
+  @Nullable
+  public PsiElement getJsonId() {
+    return findChildByType(JSON_ID);
+  }
+
+  @Override
+  @Nullable
+  public PsiElement getNumber() {
+    return findChildByType(NUMBER);
+  }
+
+  @Override
+  @Nullable
   public PsiElement getString() {
     return findChildByType(STRING);
   }

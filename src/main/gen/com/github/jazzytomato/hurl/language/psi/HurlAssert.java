@@ -1,0 +1,19 @@
+// This is a generated file. Not intended for manual editing.
+package com.github.jazzytomato.hurl.language.psi;
+
+import java.util.List;
+import org.jetbrains.annotations.*;
+import com.intellij.psi.PsiElement;
+
+public interface HurlAssert extends PsiElement {
+
+  @NotNull
+  List<HurlFilter> getFilterList();
+
+  @NotNull
+  HurlPredicate getPredicate();
+
+  @NotNull
+  HurlQuery getQuery();
+
+}

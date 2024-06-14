@@ -10,19 +10,47 @@
   tokenTypeClass="com.github.jazzytomato.hurl.language.psi.HurlTokenType"
 
   tokens = [
+      NEW_LINE = 'regexp:\n+'
       WHITE_SPACE = 'regexp:\s+'
       NULL = "null"
-      NUMBER = "regexp:(\+|\-)?\p{Digit}+"
-      ALPHANUM = "regexp:[A-Za-z0-9]"
+
+      // sections
+      S_BASIC_AUTH = "[BasicAuth]"
+      S_QUERY_STRING_PARAMS = "[QueryStringParams]"
+      S_FORM_PARAMS = "[FormParams]"
+      S_MULTIPART_FORM_DATA = "[MultipartFormData]"
+      S_COOKIES = "[Cookies]"
+      S_OPTIONS = "[Options]"
+      S_CAPTURES = "[Captures]"
+      S_ASSERTS = "[Asserts]"
+      S_HEADERS = "[Headers]"
+
+      NUMBER = "regexp:(\d+)?[eE]?[+\-]?\d+(\.\d+)?"
+      JSON_ID = "regexp:\"([^\"\\]|\\.)*\":"
       STRING = "regexp:\"([^\"\\]|\\.)*\""
-      DIGIT = "regexp:[0-9]"
-      BOOLEAN = "regexp:(true|false)"
+//      SINGLE_QUOTE_STRING = "regexp:'([^'\\]|\\.)*'"
+      TEMPLATE = "regexp:\{\{[^}]*\}\}"
+      BACKQUOTE_3 = "```"
+      //KEY_STRING = 'regexp:([A-Za-z0-9]|_|-|\.|\[|\]|@|\$|\{\{.*\}\})+:'
+
+      COMMENT = "regexp:#.*"
+      METHOD= "regexp:(GET|POST|PUT|DELETE|PATCH|HEAD|OPTIONS|CONNECT|TRACE|LINK|UNLINK|PURGE|LOCK|UNLOCK|PROPFIND|VIEW)"
+      URL = 'regexp:(\{\{.*\}\})*(https?://\S*)(\{\{.*\}\}\S*|\S*)'
+      HTTP_VERSION = "regexp:(HTTP/1.0|HTTP/1.1|HTTP/2|HTTP/3|HTTP/\*|HTTP)"
+      LESS_OR_EQUAL = "<="
+      GREATER_OR_EQUAL = ">="
+      LBRACKET = '['
+      RBRACKET = ']'
+      LBRACE = '{'
+      RBRACE = '}'
+      LPAR = '('
+      RPAR = ')'
       UNDERSCORE = "_"
       DASH = '-'
       DOT = '.'
       AT = '@'
       BANG = '!'
-      BACKSLASH = '\\'
+      BACKSLASH = '\'
       SLASH = '/'
       DOLLAR = '$'
       QMARK = '?'
@@ -33,63 +61,96 @@
       COLON = ":"
       SEMI = ";"
       PLUS = "+"
-      GREATER = ">"
-        LESS = "<"
-      //HEXDIGIT = "regexp:[0-9A-Fa-f]"
-      //KEY_STRING_TEXT = "regexp:([A-Za-z0-9]|_|-|.|\[|\]|@|\$)+"
-      COMMENT = "regexp:#.*"
-      METHOD= "regexp:(GET|POST|PUT|DELETE|PATCH|HEAD|OPTIONS)"
-      URL = 'regexp:(\{\{.*\}\})*(https?://\S*)(\{\{.*\}\}\S*|\S*)'
-      HTTP_VERSION = "regexp:(HTTP/1.0|HTTP/1.1|HTTP/2|HTTP)"
-//      IDENTIFIER = 'regexp:\w+'
-//      JSON_ID = "regexp:\p{Alpha}\w*"
-      LBRACKET = '['
-      RBRACKET = ']'
-      LBRACE = '{'
-      RBRACE = '}'
-      LPAR = '('
-      RPAR = ')'
+      STAR = '*'
+      GREATER = '>'
+      LESS = '<'
+      BACKQUOTE = '`'
+      TILDE = '~'
+      CARET = '^'
+      PIPE = '|'
+      PLUS = '+'
+      QUOTE = '"'
+      ALPHANUM = "regexp:[A-Za-z0-9]+"
+      IDENTIFIER = "regexp:[A-Za-z0-9_-]+"
+
+      ANY = "regexp:[^\s,\{\}\[\]]"
   ]
+
+  extends(".*-option")=option
+  extends(".*-query")=query
+  extends(".*-filter")=filter
+  extends(".*-predicate")=predicate
 }
 
 //hurlFile ::= request*
-hurlFile ::= entry*
-entry ::= request response?
-
-request ::= !<<eof>> METHOD url_or_template header* request-section* body? {pin=3 recoverWhile=request_recover}
-private request_recover ::= !response
-url_or_template ::= (URL | template) (NUMBER|DASH|COMMA|ALPHANUM|SLASH|BACKSLASH|AMPERSAND|EQ|QMARK|PERCENT|DOLLAR|BOOLEAN|template)*  {pin=2 recoverWhile=recover_url_or_template}
-private recover_url_or_template ::= !(header | request-section | body | response)
+hurlFile ::= !<<eof>> entry* NEW_LINE*
+entry ::= request response? {recoverWhile=recover_entry}
+private recover_entry ::= !request
+request ::= NEW_LINE* METHOD url_or_template NEW_LINE* header* request-section* body?
+url_or_template ::= (URL | template) (NUMBER|ALPHANUM|IDENTIFIER|'-'|','|'/'|'\'|'&'|'='|'?'|'%'|'$'|key-string|':'|template)*
+// todo: catchall rule for all tokens
 
 request-section ::=  basic-auth-section | query-string-params-section | form-params-section | multipart-form-data-section | cookies-section | options-section
-basic-auth-section ::= '[BasicAuth]' key-value*
-query-string-params-section ::= '[QueryStringParams]' key-value*
-form-params-section ::= '[FormParams]' key-value*
-multipart-form-data-section ::= '[MultipartFormData]' multipart-form-data-param*
+basic-auth-section ::= NEW_LINE* '[BasicAuth]' NEW_LINE key-value*
+query-string-params-section ::= NEW_LINE* '[QueryStringParams]' NEW_LINE key-value*
+form-params-section ::= NEW_LINE* '[FormParams]' NEW_LINE key-value*
+multipart-form-data-section ::= NEW_LINE* '[MultipartFormData]' NEW_LINE+ multipart-form-data-param*
 multipart-form-data-param ::= key-value | file-param
-file-param ::= key-string COLON file-value
-file-value ::= 'file,' filename+ ';' file-contenttype?
-filename ::= (ALPHANUM|UNDERSCORE|SLASH|BACKSLASH|DOT|LBRACKET|RBRACKET|LBRACE|RBRACE)+ | template
-file-contenttype ::= (ALPHANUM | '/' | '-' | '+')+
-cookies-section ::= '[Cookies]' key-value*
-options-section ::= '[Options]' key-value* //todo
+file-param ::= NEW_LINE* key-string ':' file-value NEW_LINE
+file-value ::= 'file,' filename ';' file-contenttype?
+file-contenttype ::= (ALPHANUM | IDENTIFIER | '/' | '-' | '+')+
+cookies-section ::= NEW_LINE* '[Cookies]' NEW_LINE key-value*
+options-section ::= NEW_LINE* '[Options]' NEW_LINE option*
+option ::= NEW_LINE* (aws-sigv4-option|ca-certificate-option|client-certificate-option|client-key-option|compressed-option|connect-to-option|delay-option|follow-redirect-option|follow-redirect-trusted-option|http10-option|http11-option|http2-option|http3-option|insecure-option|ipv4-option|ipv6-option|max-redirs-option|netrc-option|netrc-file-option|netrc-optional-option|output-option|path-as-is-option|proxy-option|resolve-option|retry-option|retry-interval-option|skip-option|unix-socket-option|user-option|variable-option|verbose-option|very-verbose-option)
+aws-sigv4-option ::= 'aws-sigv4:' value-string
+ca-certificate-option ::= 'cacert:' filename
+client-certificate-option ::= 'cert:' filename
+client-key-option ::= 'key:' value-string
+compressed-option ::= 'compressed:' boolean-option
+connect-to-option ::= 'connect-to:' value-string
+delay-option ::= 'delay:' integer-option
+follow-redirect-option ::= 'location:' boolean-option
+follow-redirect-trusted-option ::= 'location-trusted:' boolean-option
+http10-option ::= 'http1.0:' boolean-option
+http11-option ::= 'http1.1:' boolean-option
+http2-option ::= 'http2:' boolean-option
+http3-option ::= 'http3:' boolean-option
+insecure-option ::= 'insecure:' boolean-option
+ipv4-option ::= 'ipv4:' boolean-option
+ipv6-option ::= 'ipv6:' boolean-option
+max-redirs-option ::= 'max-redirs:' integer-option
+netrc-option ::= 'netrc:' boolean-option
+netrc-file-option ::= 'netrc-file:' value-string
+netrc-optional-option ::= 'netrc-optional:' boolean-option
+output-option ::= 'output:' value-string
+path-as-is-option ::= 'path-as-is:' boolean-option
+proxy-option ::= 'proxy:' value-string
+resolve-option ::= 'resolve:' value-string
+retry-option ::= 'retry:' integer-option
+retry-interval-option ::= 'retry-interval:' integer-option
+skip-option ::= 'skip:' boolean-option
+unix-socket-option ::= 'unix-socket:' value-string
+user-option ::= 'user:' value-string
+variable-option ::= 'variable:' (ALPHANUM|IDENTIFIER)+ '=' variable-value+
+variable-value ::=  NULL | 'true' | 'false' | '=' | NUMBER | ALPHANUM | IDENTIFIER | key-string
+verbose-option ::= 'verbose:' boolean-option
+very-verbose-option ::= 'very-verbose:' boolean-option
+boolean-option ::= ('true'|'false') | TEMPLATE
+integer-option ::= NUMBER | TEMPLATE
 
-response ::= HTTP_VERSION NUMBER header* response-section* body?
+
+response ::= NEW_LINE* HTTP_VERSION http-status NEW_LINE header* response-section* body?
 //version ::=  'HTTP/1.0'|'HTTP/1.1'|'HTTP/2'|'HTTP'
-//status ::= 'regexp[0-9]+'
+http-status ::= NUMBER | '*'
 header ::= key-value
-key-value ::= key-string COLON value-string
-key-string ::= (key-string-content | template)*
-key-string-content ::= (key-string-text | key-string-escaped-char)+
-key-string-text ::= (ALPHANUM|UNDERSCORE|DASH|DOT|LBRACKET|RBRACKET|AT|DOLLAR)+
-key-string-escaped-char ::= '\' ('#'|':'|'\'|'\b'|'\f'|'\n'|'\r'|'\t'|'\u')
-value-string ::= STRING | ( value-string-content | template)+
-value-string-content ::= ALPHANUM|NUMBER|BACKSLASH|SLASH|UNDERSCORE|DASH|DOT|LBRACKET|RBRACKET|AT|DOLLAR|BANG
+key-value ::= NEW_LINE* key-string ':' value-string? NEW_LINE
+value-string ::= STRING | ( value-string-content | TEMPLATE)+
+private value-string-content ::= (URL|catchall)+
 //private recover_value-string ::= !(COMMENT|CRLF)+
 //value-string-content ::= (!(COMMENT|CRLF))+
 response-section ::= capture-section | asserts-section
-capture-section ::= '[Captures]' capture*
-capture ::= key-string COLON query filter*
+capture-section ::= '[Captures]' NEW_LINE capture*
+capture ::= NEW_LINE* key-string ':' query filter* NEW_LINE
 query ::=  status-query | url-query | header-query | certificate-query | cookie-query | body-query | xpath-query | jsonpath-query | regex-query | variable-query | duration-query | bytes-query | sha256-query | md5-query
 status-query ::= 'status'
 url-query ::= 'url'
@@ -99,29 +160,31 @@ cookie-query ::= 'cookie' STRING
 body-query ::= 'body'
 xpath-query ::= 'xpath' STRING
 jsonpath-query ::= 'jsonpath' STRING
-regex-query ::= 'regex' STRING
+regex-query ::= 'regex' (STRING|regex)
 variable-query ::= 'variable' STRING
 duration-query ::= 'duration'
 sha256-query ::= 'sha256'
 md5-query ::= 'md5'
 bytes-query ::= 'bytes'
-asserts-section ::= '[Asserts]' assert*
-assert ::= query filter* predicate
-predicate ::=  'not'? (equal-predicate|not-equal-predicate|greater-predicate|greater-or-equal-predicate|less-predicate|less-or-equal-predicate|start-with-predicate|end-with-predicate|contain-predicate|match-predicate|exist-predicate|is-empty-predicate|include-predicate|integer-predicate|float-predicate|boolean-predicate|string-predicate|collection-predicate|date-predicate|iso-date-predicate)
-equal-predicate ::= EQ EQ predicate-value
-not-equal-predicate ::= BANG EQ predicate-value
-greater-predicate ::= GREATER predicate-value
-greater-or-equal-predicate ::= GREATER EQ predicate-value
-less-predicate ::= LESS predicate-value
-less-or-equal-predicate ::= LESS EQ predicate-value
-start-with-predicate ::= 'startsWith' STRING
-end-with-predicate ::= 'endsWith' STRING
-contain-predicate ::= 'contains' STRING
-match-predicate ::= 'matches' STRING
+asserts-section ::= NEW_LINE* '[Asserts]' NEW_LINE assert*
+assert ::= NEW_LINE* query filter* predicate NEW_LINE
+predicate ::=  'not'? (equal-predicate|not-equal-predicate|greater-predicate|greater-or-equal-predicate|less-predicate|less-or-equal-predicate|start-with-predicate|end-with-predicate|contain-predicate|match-predicate|regex-predicate|exist-predicate|is-empty-predicate|include-predicate|integer-predicate|float-predicate|boolean-predicate|string-predicate|collection-predicate|date-predicate|iso-date-predicate|is-number-predicate)
+equal-predicate ::= '==' predicate-value
+not-equal-predicate ::= '!=' predicate-value
+greater-predicate ::= '>' predicate-value
+greater-or-equal-predicate ::= '>=' predicate-value
+less-predicate ::= '<' predicate-value
+less-or-equal-predicate ::= '<=' predicate-value
+start-with-predicate ::= 'startsWith' (STRING|oneline-hex|oneline-base64)
+end-with-predicate ::= 'endsWith' (STRING|oneline-hex|oneline-base64)
+contain-predicate ::= 'contains' (STRING|oneline-hex|oneline-base64)
+match-predicate ::= 'matches' (STRING|regex)
+regex-predicate ::= 'regex' (STRING|regex)
 exist-predicate ::= 'exists'
 is-empty-predicate ::= 'isEmpty'
 include-predicate ::= 'includes' predicate-value
 integer-predicate ::= 'isInteger'
+is-number-predicate ::= 'isNumber'
 float-predicate ::= 'isFloat'
 boolean-predicate ::= 'isBoolean'
 string-predicate ::= 'isString'
@@ -129,33 +192,67 @@ collection-predicate ::= 'isCollection'
 date-predicate ::= 'isDate'
 iso-date-predicate ::= 'isIsoDate'
 
-predicate-value ::= BOOLEAN|STRING|NULL|NUMBER|oneline-base64|oneline-file|oneline-hex|template
-oneline-base64 ::= 'base64,' (ALPHANUM|PLUS|DASH|EQ)* SEMI
-oneline-file ::= 'file,' filename SEMI
-oneline-hex ::= 'hex,' ALPHANUM* SEMI
+predicate-value ::= oneline-base64|oneline-file|oneline-hex|TEMPLATE|multiline-string|multiline-json-string|multiline-xml-string|multiline-graphql-string|catchall
+oneline-base64 ::= 'base64,' (ALPHANUM|IDENTIFIER|'+'|'-'|'='|'==')* ';'
+oneline-file ::= 'file,' filename ';'
+oneline-hex ::= 'hex,' (NUMBER|ALPHANUM)* ';'
+oneline-string ::= '`' (xml | '[' | ']' | '{' | '}' | '(' | ')' | "_" | '-' | '.' | '@' | '!' | '\' | '/' | '$' | '?' | '=' | '&' | '%' | "," | ":" | ";" | "+" | '*' | '>' | '<' | '\`' | '~' | '^' | '|' | '+' | NULL | ALPHANUM |NUMBER | TEMPLATE | METHOD | ANY)* '`'
+
+filename ::= (TEMPLATE|ANY|ALPHANUM|IDENTIFIER|STRING|NULL|NUMBER|'.'|'_'|'/'|'\'|',')+
 
 
-
-template ::= LBRACE LBRACE ((ALPHANUM | '_' | '-')+ | filter) RBRACE RBRACE
-
-filter ::= 'count' | 'daysAfterNow' | 'daysBeforeNow' | 'decode' | 'format' | 'htmlEscape' | 'htmlUnescape' | 'toDate' | 'toInt' | 'urlDecode' | 'urlEncode' | jsonpath-filter | nth-filter | regex-filter | replace-filter | split-filter | xpath-filter
+filter ::= 'count' | 'daysAfterNow' | 'daysBeforeNow' | 'htmlEscape' | 'htmlUnescape' | 'toInt' | 'urlDecode' | 'urlEncode' | decode-filter | jsonpath-filter | nth-filter | regex-filter | replace-filter | split-filter | xpath-filter | format-filter | todate-filter
 jsonpath-filter ::= 'jsonpath' STRING
 nth-filter ::= 'nth' NUMBER
 regex-filter ::= 'regex' (STRING | regex)
 replace-filter ::= 'replace' (STRING | regex) STRING
 split-filter ::= 'split' STRING
 xpath-filter ::= 'xpath' STRING
-
+format-filter ::= 'format' STRING
+todate-filter ::= 'toDate' STRING
+decode-filter ::= 'decode' STRING
 regex ::= '/' regex-content '/'
-regex-content ::= (!('/' | '\\/'))+
+regex-content ::= ('[' | ']' | '{' | '}' | '(' | ')' | "_" | '-' | '.' | '@' | '!' | '\' | '$' | '?' | '=' | '&' | '%' | "," | ":" | ";" | "+" | '*' | '>' | '<' | '`' | '~' | '^' | '|' | '+' | ALPHANUM | IDENTIFIER | NUMBER | JSON_ID | STRING | ANY | '\/' )+
+key-string ::= (ALPHANUM|IDENTIFIER|NUMBER|NULL|'_'|'-'|'.'|'['|']'|'@'|'$'|'\'|'{'|'}'|TEMPLATE)+
 
+// TODO: support for unicode chars
+// unicode-char(used by quoted-string-escaped-char, key-string-escaped-char, value-string-escaped-char, oneline-string-escaped-char, multiline-string-escaped-char, filename-escaped-char, filename-password-escaped-char)
+//quoted-string-escaped-char ::= '\' ('"'|'\'|'\b'|'\f'|'\n'|'\r'|'\t'|'\u' unicode-char)
+//key-string-escaped-char ::=
+//value-string-escaped-char ::=
+//oneline-string-escaped-char ::=
+//multiline-string-escaped-char ::=
+//filename-escaped-char ::=
+//filename-password-escaped-char ::=
+//unicode-char ::= '{' ALPHANUM+ '}'
 
-body ::= json | STRING
-json ::= json_array | json_object {hooks=[wsBinders="null, null"]}
-json_value ::= STRING | NUMBER | BOOLEAN | NULL | json
-json_array ::= LBRACKET [!RBRACKET json_item (!RBRACKET ',' json_item) *] RBRACKET {pin(".*")=1 extends=json}
+body ::= NEW_LINE* (json | xml | STRING|multiline-json-string|multiline-xml-string|multiline-graphql-string|multiline-string|oneline-string|oneline-file|oneline-base64|oneline-hex|catchall) NEW_LINE
+multiline-json-string ::= '```json' NEW_LINE* json NEW_LINE* '```'
+multiline-xml-string ::= '```xml' NEW_LINE* xml NEW_LINE* '```'
+multiline-graphql-string ::= '```graphql' (TEMPLATE|catchall|NEW_LINE)* '```'
+multiline-string ::= '```' (TEMPLATE|catchall|NEW_LINE)* '```'
+
+json ::= json_array | json_object //{hooks=[wsBinders="null, null"]}
+json_value ::= STRING | TEMPLATE | NUMBER | ('true'|'false') | NULL | json
+json_array ::= '[' [!']' json_item (!']' ',' json_item) *] ']' {pin(".*")=1 extends=json}
 private json_item ::= json_value {recoverWhile=recover_json}
 json_object ::= '{' [!'}' !'{' json_prop (!'}' ',' json_prop) *] '}' {pin(".*")=1 extends=json}
-json_prop ::= [] json_name ':' json_value {pin=1 recoverWhile=recover_json} // remove [] to make NAME mandatory
-json_name ::= ALPHANUM | STRING {name="json_name" }//hooks=[rightBinder="GREEDY_RIGHT_BINDER"]}
+json_prop ::= [] json_name json_value  NEW_LINE* {pin=1 recoverWhile=recover_json} // remove [] to make NAME mandatory
+json_name ::= (JSON_ID | STRING ':')  {name="json_name" }//hooks=[rightBinder="GREEDY_RIGHT_BINDER"]}
 private recover_json ::= !(',' | ']' | '}' | '[' | '{')
+//
+
+private catchall ::= '[' | ']' | '{' | '}' | '(' | ')' | "_" | '-' | '.' | '@' | '!' | '\' | '/' | '$' | '?' | '=' | '&' | '%' | "," | ":" | ";" | "+" | '*' | '>' | '<' | '<=' | '>=' | '`' | '~' | '^' | '|' | '+' | NULL| ALPHANUM |IDENTIFIER|NUMBER | JSON_ID | STRING | ANY
+
+xml ::= (xml_version_tag | xml_comment | NEW_LINE)* xml_element
+private xml_element ::= xml_open_tag xml_content* xml_close_tag | xml_self_closing_tag | xml_comment
+private xml_comment ::= '<!--' (catchall | NEW_LINE)* '-->'
+private xml_version_tag ::= '<?xml' xml_attribute* '?>'
+private xml_open_tag ::= '<' xml_tag_name xml_attribute* '>'
+private xml_close_tag ::= '<' '/' xml_tag_name '>'
+private xml_self_closing_tag ::= '<' xml_tag_name xml_attribute* '/' '>'
+private xml_tag_name ::= IDENTIFIER | ALPHANUM
+private xml_attribute ::= (ALPHANUM|NUMBER|'_'|'-')+ '=' STRING
+//xml_attribute_value ::=  (ALPHANUM|NUMBER|'_'|'-')+ | xml_text
+private xml_content ::= xml_element | xml_text
+private xml_text ::= '[' | ']' | '{' | '}' | '(' | ')' | "_" | '-' | '.' | '@' | '!' | '\' | '/' | '$' | '?' | '=' | '&' | '%' | "," | ":" | ";" | "+" | '*' | '>' | '`' | '~' | '^' | '|' | '+' | NULL| ALPHANUM | IDENTIFIER| NUMBER | JSON_ID | STRING | ANY | TEMPLATE | NEW_LINE

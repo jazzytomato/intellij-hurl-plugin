@@ -3,7 +3,16 @@ package com.github.jazzytomato.hurl.language.psi.impl;
 
 import com.github.jazzytomato.hurl.language.psi.HurlBody;
 import com.github.jazzytomato.hurl.language.psi.HurlJson;
+import com.github.jazzytomato.hurl.language.psi.HurlMultilineGraphqlString;
+import com.github.jazzytomato.hurl.language.psi.HurlMultilineJsonString;
+import com.github.jazzytomato.hurl.language.psi.HurlMultilineString;
+import com.github.jazzytomato.hurl.language.psi.HurlMultilineXmlString;
+import com.github.jazzytomato.hurl.language.psi.HurlOnelineBase64;
+import com.github.jazzytomato.hurl.language.psi.HurlOnelineFile;
+import com.github.jazzytomato.hurl.language.psi.HurlOnelineHex;
+import com.github.jazzytomato.hurl.language.psi.HurlOnelineString;
 import com.github.jazzytomato.hurl.language.psi.HurlVisitor;
+import com.github.jazzytomato.hurl.language.psi.HurlXml;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import com.intellij.lang.ASTNode;
 import com.intellij.openapi.util.TextRange;
@@ -37,6 +46,76 @@ public class HurlJsonImpl extends ASTWrapperPsiElement implements HurlBody, PsiL
   @Nullable
   public HurlJson getJson() {
     return findChildByClass(HurlJson.class);
+  }
+
+  @Override
+  public @Nullable HurlMultilineGraphqlString getMultilineGraphqlString() {
+    return findChildByClass(HurlMultilineGraphqlString.class);
+  }
+
+  @Override
+  public @Nullable HurlMultilineJsonString getMultilineJsonString() {
+    return findChildByClass(HurlMultilineJsonString.class);
+  }
+
+  @Override
+  public @Nullable HurlMultilineString getMultilineString() {
+    return findChildByClass(HurlMultilineString.class);
+  }
+
+  @Override
+  public @Nullable HurlMultilineXmlString getMultilineXmlString() {
+    return findChildByClass(HurlMultilineXmlString.class);
+  }
+
+  @Override
+  public @Nullable HurlOnelineBase64 getOnelineBase64() {
+    return findChildByClass(HurlOnelineBase64.class);
+  }
+
+  @Override
+  public @Nullable HurlOnelineFile getOnelineFile() {
+    return findChildByClass(HurlOnelineFile.class);
+  }
+
+  @Override
+  public @Nullable HurlOnelineHex getOnelineHex() {
+    return findChildByClass(HurlOnelineHex.class);
+  }
+
+  @Override
+  public @Nullable HurlOnelineString getOnelineString() {
+    return findChildByClass(HurlOnelineString.class);
+  }
+
+  @Override
+  public @Nullable HurlXml getXml() {
+    return null;
+  }
+
+  @Override
+  public @Nullable PsiElement getAlphanum() {
+    return null;
+  }
+
+  @Override
+  public @Nullable PsiElement getAny() {
+    return null;
+  }
+
+  @Override
+  public @Nullable PsiElement getIdentifier() {
+    return null;
+  }
+
+  @Override
+  public @Nullable PsiElement getJsonId() {
+    return null;
+  }
+
+  @Override
+  public @Nullable PsiElement getNumber() {
+    return null;
   }
 
   @Override

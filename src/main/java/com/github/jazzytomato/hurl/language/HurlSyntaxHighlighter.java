@@ -22,7 +22,7 @@ public class HurlSyntaxHighlighter extends SyntaxHighlighterBase {
             createTextAttributesKey("HURL_COMMENT", DefaultLanguageHighlighterColors.LINE_COMMENT);
     public static final TextAttributesKey BAD_CHARACTER =
             createTextAttributesKey("HURL_BAD_CHARACTER", HighlighterColors.BAD_CHARACTER);
-    public static final TextAttributesKey VARR = createTextAttributesKey("HURL_VARR", DefaultLanguageHighlighterColors.GLOBAL_VARIABLE);
+    public static final TextAttributesKey TEMPLATE = createTextAttributesKey("HURL_TEMPLATE", DefaultLanguageHighlighterColors.GLOBAL_VARIABLE);
     public static final TextAttributesKey IDENTIFIER = createTextAttributesKey("HURL_IDENTIFIER", DefaultLanguageHighlighterColors.IDENTIFIER);
     public static final TextAttributesKey LBRACE = createTextAttributesKey("HURL_LBRACE", DefaultLanguageHighlighterColors.BRACES);
     public static final TextAttributesKey RBRACE = createTextAttributesKey("HURL_RBRACE", DefaultLanguageHighlighterColors.BRACES);
@@ -30,7 +30,7 @@ public class HurlSyntaxHighlighter extends SyntaxHighlighterBase {
     private static final TextAttributesKey[] METHOD_KEYS = new TextAttributesKey[]{METHOD};
     private static final TextAttributesKey[] URL_KEYS = new TextAttributesKey[]{URL};
     private static final TextAttributesKey[] COMMENT_KEYS = new TextAttributesKey[]{COMMENT};
-    private static final TextAttributesKey[] VARR_KEYS = new TextAttributesKey[]{VARR};
+    private static final TextAttributesKey[] TEMPLATE_KEYS = new TextAttributesKey[]{TEMPLATE};
     private static final TextAttributesKey[] BAD_CHAR_KEYS = new TextAttributesKey[]{BAD_CHARACTER};
     private static final TextAttributesKey[] EMPTY_KEYS = new TextAttributesKey[0];
     private static final TextAttributesKey[] IDENTIFIER_KEYS = new TextAttributesKey[]{IDENTIFIER};
@@ -47,12 +47,12 @@ public class HurlSyntaxHighlighter extends SyntaxHighlighterBase {
         if (tokenType.equals(HurlTypes.METHOD)) {
             return METHOD_KEYS;
         }
-        if (tokenType.equals(HurlTypes.VARR)) {
-            return VARR_KEYS;
+        if (tokenType.equals(HurlTypes.TEMPLATE)) {
+            return TEMPLATE_KEYS;
         }
-        if (tokenType.equals(HurlTypes.IDENTIFIER)) {
-            return IDENTIFIER_KEYS;
-        }
+//        if (tokenType.equals(HurlTypes.IDENTIFIER)) {
+//            return IDENTIFIER_KEYS;
+//        }
         if (tokenType.equals(HurlTypes.LBRACE) || tokenType.equals(HurlTypes.RBRACE)) {
             return BRACE_KEYS;
         }

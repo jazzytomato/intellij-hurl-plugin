@@ -16,4 +16,7 @@ public interface HurlJsonValue extends PsiElement {
   @Nullable
   PsiElement getString();
 
+  @Nullable
+  PsiElement getTemplate();
+
 }

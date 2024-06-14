@@ -11,12 +11,15 @@ public interface HurlRequest extends PsiElement {
   HurlBody getBody();
 
   @NotNull
-  List<HurlVarr> getVarrList();
+  List<HurlHeader> getHeaderList();
+
+  @NotNull
+  List<HurlRequestSection> getRequestSectionList();
+
+  @NotNull
+  HurlUrlOrTemplate getUrlOrTemplate();
 
   @NotNull
   PsiElement getMethod();
-
-  @Nullable
-  PsiElement getUrl();
 
 }
