@@ -1,5 +1,6 @@
 package com.github.jazzytomato.hurl.run;
 
+import com.github.jazzytomato.hurl.language.psi.HurlFile;
 import com.github.jazzytomato.hurl.language.psi.HurlTypes;
 import com.github.jazzytomato.hurl.language.psi.impl.HurlRequestImpl;
 import com.intellij.execution.actions.ConfigurationContext;
@@ -27,6 +28,10 @@ public class HurlRunConfigurationProducer extends LazyRunConfigurationProducer<H
 
     @Override
     protected boolean setupConfigurationFromContext(@NotNull HurlRunConfiguration configuration, @NotNull ConfigurationContext context, @NotNull Ref<PsiElement> sourceElement) {
+        if (sourceElement.get().getClass() == HurlFile.class) {
+            configuration.setName(context.getPsiLocation().getContainingFile().getName());
+            return true;
+        }
         if (sourceElement.get().getNode().getElementType() == HurlTypes.METHOD) {
             String method = sourceElement.get().getText();
             String url = ((HurlRequestImpl) ((LeafPsiElement) sourceElement.get().getNode()).getParent()).getUrlOrTemplate().getText();
