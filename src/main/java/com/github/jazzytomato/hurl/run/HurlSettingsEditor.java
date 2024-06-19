@@ -12,24 +12,29 @@ public class HurlSettingsEditor extends SettingsEditor<HurlRunConfiguration> {
 
     private final JPanel myPanel;
     private final TextFieldWithBrowseButton hurlPathField;
+    private final JTextField hurlArgsField;
 
     public HurlSettingsEditor() {
+        hurlArgsField = new JTextField();
         hurlPathField = new TextFieldWithBrowseButton();
         hurlPathField.addBrowseFolderListener("Select Script File", null, null,
                 FileChooserDescriptorFactory.createSingleFileDescriptor());
         myPanel = FormBuilder.createFormBuilder()
                 .addLabeledComponent("Hurl executable path", hurlPathField)
+                .addLabeledComponent("Arguments", hurlArgsField)
                 .getPanel();
     }
 
     @Override
-    protected void resetEditorFrom(HurlRunConfiguration demoRunConfiguration) {
-        hurlPathField.setText(demoRunConfiguration.getHurlPath());
+    protected void resetEditorFrom(HurlRunConfiguration runConfig) {
+        hurlPathField.setText(runConfig.getHurlPath());
+        hurlArgsField.setText(runConfig.getHurlArgs());
     }
 
     @Override
-    protected void applyEditorTo(@NotNull HurlRunConfiguration demoRunConfiguration) {
-        demoRunConfiguration.setHurlPath(hurlPathField.getText());
+    protected void applyEditorTo(@NotNull HurlRunConfiguration runConfig) {
+        runConfig.setHurlPath(hurlPathField.getText());
+        runConfig.setHurlArgs(hurlArgsField.getText());
     }
 
     @NotNull

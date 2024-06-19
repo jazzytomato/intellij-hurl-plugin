@@ -1,5 +1,6 @@
 package com.github.jazzytomato.hurl.run;
 
+import com.github.jazzytomato.hurl.language.HurlIcons;
 import com.intellij.execution.configurations.ConfigurationFactory;
 import com.intellij.execution.configurations.ConfigurationType;
 import com.intellij.execution.configurations.ConfigurationTypeBase;
@@ -15,7 +16,7 @@ final class HurlRunConfigurationType extends ConfigurationTypeBase {
 
     HurlRunConfigurationType() {
         super(ID, "Hurl", "Hurl run configuration type",
-                NotNullLazyValue.createValue(() -> AllIcons.Nodes.Console));
+                NotNullLazyValue.createValue(() -> HurlIcons.FILE));
         addFactory(new HurlRunConfigurationFactory(this));
     }
 

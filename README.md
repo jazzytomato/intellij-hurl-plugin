@@ -7,12 +7,17 @@
 - [x] Basic Syntax highlighting
 - [x] Code commenter
 - [x] Generate run config from gutter and run it (all file)
-- [ ] Fix parser errors
+- [x] Fix parser errors
+- [ ] Better syntax highlighting
 - [ ] Tidy up and publish
-- [ ] Full parser of hurl grammar https://hurl.dev/docs/grammar.html#grammar
+- [x] Full parser of hurl grammar https://hurl.dev/docs/grammar.html#grammar
+- [ ] Code folding - would be useful to fold hurl entries
 - [ ] Run individual requests (could use --from-entry & --to-entry options, or generate a tmp file but not ideal)
 - [ ] Code completion
-- [ ] JSON body support
+- [x] JSON language injection
+- [ ] XML language injection
+- [ ] Json path language injection
+- [ ] xpath language injection
 - [ ] Vars file support
 - [ ] Better run config options
 - [ ] Mark failed assertions as errors in the editor

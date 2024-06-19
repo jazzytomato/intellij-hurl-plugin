@@ -16,4 +16,14 @@ public class HurlRunConfigurationOptions extends RunConfigurationOptions {
         hurlPath.setValue(this, scriptName);
     }
 
+    private final StoredProperty<String> hurlArgs =
+            string("").provideDelegate(this, "Hurl arguments:");
+
+    public String getHurlArgs() {
+        return hurlArgs.getValue(this);
+    }
+
+    public void setHurlArgs(String args) {
+        hurlArgs.setValue(this, args);
+    }
 }

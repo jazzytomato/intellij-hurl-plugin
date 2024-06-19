@@ -9,7 +9,7 @@
     <resource-bundle>messages.MyBundle</resource-bundle>
 
     <extensions defaultExtensionNs="com.intellij">
-        <toolWindow factoryClass="com.github.jazzytomato.hurl.toolWindow.MyToolWindowFactory" id="MyToolWindow"/>
+<!--        <toolWindow factoryClass="com.github.jazzytomato.hurl.toolWindow.MyToolWindowFactory" id="MyToolWindow"/>-->
         <fileType
                 name="Hurl File"
                 implementationClass="com.github.jazzytomato.hurl.language.HurlFileType"

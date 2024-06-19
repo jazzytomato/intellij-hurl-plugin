@@ -16,12 +16,18 @@ import com.intellij.execution.runners.ExecutionEnvironment;
 import com.intellij.openapi.actionSystem.CommonDataKeys;
 import com.intellij.openapi.options.SettingsEditor;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.util.InvalidDataException;
+import com.intellij.openapi.util.JDOMExternalizerUtil;
 import com.intellij.openapi.vfs.VirtualFile;
 import org.intellij.lang.annotations.Language;
+import org.jdom.Element;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class HurlRunConfiguration extends RunConfigurationBase<HurlRunConfigurationOptions> {
+
+    public static final String KEY_HURL_PATH = "hurl.path";
+    public static final String KEY_HURL_ARGS = "hurl.args";
 
     protected HurlRunConfiguration(Project project,
                                    ConfigurationFactory factory,
@@ -41,6 +47,28 @@ public class HurlRunConfiguration extends RunConfigurationBase<HurlRunConfigurat
 
     public void setHurlPath(String scriptName) {
         getOptions().setHurlPath(scriptName);
+    }
+
+    public String getHurlArgs() {
+        return getOptions().getHurlArgs();
+    }
+
+    public void setHurlArgs(String args) {
+        getOptions().setHurlArgs(args);
+    }
+
+    @Override
+    public void readExternal(@NotNull Element element) throws InvalidDataException {
+        super.readExternal(element);
+        setHurlPath(JDOMExternalizerUtil.readField(element, KEY_HURL_PATH));
+        setHurlArgs(JDOMExternalizerUtil.readField(element, KEY_HURL_ARGS));
+    }
+
+    @Override
+    public void writeExternal(@NotNull Element element) {
+        super.writeExternal(element);
+        JDOMExternalizerUtil.writeField(element, KEY_HURL_PATH, getHurlPath());
+        JDOMExternalizerUtil.writeField(element, KEY_HURL_ARGS, getHurlArgs());
     }
 
     @NotNull
@@ -63,7 +91,7 @@ public class HurlRunConfiguration extends RunConfigurationBase<HurlRunConfigurat
                 }
 
                 String filePath = file.getPath();
-                GeneralCommandLine commandLine = new GeneralCommandLine(getOptions().getHurlPath(), filePath);
+                GeneralCommandLine commandLine = new GeneralCommandLine(getOptions().getHurlPath(), filePath, getOptions().getHurlArgs());
                 OSProcessHandler processHandler = ProcessHandlerFactory.getInstance()
                         .createColoredProcessHandler(commandLine);
                 ProcessTerminatedListener.attach(processHandler);
