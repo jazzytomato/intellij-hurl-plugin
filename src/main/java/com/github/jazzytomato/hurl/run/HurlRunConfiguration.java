@@ -24,6 +24,9 @@ import org.jdom.Element;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class HurlRunConfiguration extends RunConfigurationBase<HurlRunConfigurationOptions> {
 
     public static final String KEY_HURL_PATH = "hurl.path";
@@ -90,14 +93,28 @@ public class HurlRunConfiguration extends RunConfigurationBase<HurlRunConfigurat
                     throw new ExecutionException("No file selected");
                 }
 
-                String filePath = file.getPath();
-                GeneralCommandLine commandLine = new GeneralCommandLine(getOptions().getHurlPath(), filePath, getOptions().getHurlArgs());
+                GeneralCommandLine commandLine = getCommandLine(file);
+
                 OSProcessHandler processHandler = ProcessHandlerFactory.getInstance()
                         .createColoredProcessHandler(commandLine);
                 ProcessTerminatedListener.attach(processHandler);
                 return processHandler;
             }
         };
+    }
+
+    private @NotNull GeneralCommandLine getCommandLine(VirtualFile file) {
+        String filePath = file.getPath();
+        String hurlPath = getOptions().getHurlPath();
+        String hurlArgs = getOptions().getHurlArgs();
+        String[] argsList = hurlArgs.split("\\s+");
+        GeneralCommandLine commandLine = new GeneralCommandLine();
+        commandLine.setExePath(hurlPath);
+        commandLine.addParameter(filePath);
+        for (String arg : argsList) {
+            commandLine.addParameter(arg);
+        }
+        return commandLine;
     }
 
 }
