@@ -5,6 +5,7 @@ import com.intellij.execution.Executor;
 import com.intellij.execution.configurations.CommandLineState;
 import com.intellij.execution.configurations.ConfigurationFactory;
 import com.intellij.execution.configurations.GeneralCommandLine;
+import com.intellij.execution.configurations.LocatableConfigurationBase;
 import com.intellij.execution.configurations.RunConfiguration;
 import com.intellij.execution.configurations.RunConfigurationBase;
 import com.intellij.execution.configurations.RunProfileState;
@@ -27,7 +28,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Arrays;
 import java.util.List;
 
-public class HurlRunConfiguration extends RunConfigurationBase<HurlRunConfigurationOptions> {
+public class HurlRunConfiguration extends LocatableConfigurationBase<HurlRunConfigurationOptions> {
 
     public static final String KEY_HURL_PATH = "hurl.path";
     public static final String KEY_HURL_ARGS = "hurl.args";
@@ -64,7 +65,7 @@ public class HurlRunConfiguration extends RunConfigurationBase<HurlRunConfigurat
     public void readExternal(@NotNull Element element) throws InvalidDataException {
         super.readExternal(element);
         setHurlPath(JDOMExternalizerUtil.readField(element, KEY_HURL_PATH));
-        setHurlArgs(JDOMExternalizerUtil.readField(element, KEY_HURL_ARGS));
+        setHurlArgs(JDOMExternalizerUtil.readField(element, KEY_HURL_ARGS, ""));
     }
 
     @Override
@@ -107,7 +108,12 @@ public class HurlRunConfiguration extends RunConfigurationBase<HurlRunConfigurat
         String filePath = file.getPath();
         String hurlPath = getOptions().getHurlPath();
         String hurlArgs = getOptions().getHurlArgs();
-        String[] argsList = hurlArgs.split("\\s+");
+        String[] argsList;
+        if (hurlArgs.isBlank()) {
+            argsList = new String[0];
+        } else {
+            argsList = hurlArgs.split("\\s+");
+        }
         GeneralCommandLine commandLine = new GeneralCommandLine();
         commandLine.setExePath(hurlPath);
         commandLine.addParameter(filePath);

@@ -7,6 +7,7 @@ import com.intellij.icons.AllIcons;
 import com.intellij.openapi.project.DumbAware;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
+import com.intellij.psi.impl.source.tree.LeafPsiElement;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -15,7 +16,7 @@ public class HurlGutterRunLineMarkerProvider extends RunLineMarkerContributor im
     @Nullable
     @Override
     public Info getInfo(@NotNull PsiElement element) {
-        if (element.getNode().getElementType() == HurlTypes.METHOD) {
+        if (element.getNode().getElementType() == HurlTypes.METHOD && ((LeafPsiElement) element.getNode()).getParent().getNode().getElementType() == HurlTypes.REQUEST) {
             return new Info(AllIcons.RunConfigurations.TestState.Run, it -> "Run request", ExecutorAction.getActions());
         }
         return null;
