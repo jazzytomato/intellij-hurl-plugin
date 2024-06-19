@@ -14,6 +14,7 @@ import com.intellij.psi.impl.source.tree.LeafPsiElement;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Arrays;
 import java.util.Objects;
 
 public class HurlRunConfigurationProducer extends LazyRunConfigurationProducer<HurlRunConfiguration> {
@@ -30,6 +31,12 @@ public class HurlRunConfigurationProducer extends LazyRunConfigurationProducer<H
             String method = sourceElement.get().getText();
             String url = ((HurlRequestImpl) ((LeafPsiElement) sourceElement.get().getNode()).getParent()).getUrlOrTemplate().getText();
             configuration.setName(method + " " + url + " - " + context.getPsiLocation().getContainingFile().getName());
+
+            PsiElement[] entries = Arrays.stream(sourceElement.get().getContainingFile().getChildren()).filter(node -> node.getNode().getElementType() == HurlTypes.ENTRY).toArray(PsiElement[]::new);
+
+            int currentRequestIndex = Arrays.asList(entries).indexOf(sourceElement.get().getParent().getParent());
+
+            configuration.setHurlArgs("--from-entry " + (currentRequestIndex + 1) + " --to-entry " + (currentRequestIndex + 1));
             return true;
         }
         return false;

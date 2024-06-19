@@ -12,7 +12,7 @@
 - [ ] Tidy up and publish
 - [x] Full parser of hurl grammar https://hurl.dev/docs/grammar.html#grammar
 - [ ] Code folding - would be useful to fold hurl entries
-- [ ] Run individual requests (could use --from-entry & --to-entry options, or generate a tmp file but not ideal)
+- [x] Run individual requests (could use --from-entry & --to-entry options, or generate a tmp file but not ideal)
 - [ ] Code completion
 - [x] JSON language injection
 - [ ] XML language injection
