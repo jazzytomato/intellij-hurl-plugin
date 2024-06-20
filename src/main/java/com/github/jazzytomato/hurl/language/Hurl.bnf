@@ -88,7 +88,6 @@ entry ::= request response? {recoverWhile=recover_entry}
 private recover_entry ::= !request
 request ::= NEW_LINE* METHOD url_or_template NEW_LINE* header* request-section* body?
 url_or_template ::= (URL | template) (NUMBER|ALPHANUM|IDENTIFIER|'-'|','|'/'|'\'|'&'|'='|'?'|'%'|'$'|key-string|':'|template)*
-// todo: catchall rule for all tokens
 
 request-section ::=  basic-auth-section | query-string-params-section | form-params-section | multipart-form-data-section | cookies-section | options-section
 basic-auth-section ::= NEW_LINE* '[BasicAuth]' NEW_LINE key-value*
@@ -198,7 +197,7 @@ oneline-file ::= 'file,' filename ';'
 oneline-hex ::= 'hex,' (NUMBER|ALPHANUM)* ';'
 oneline-string ::= '`' (xml | '[' | ']' | '{' | '}' | '(' | ')' | "_" | '-' | '.' | '@' | '!' | '\' | '/' | '$' | '?' | '=' | '&' | '%' | "," | ":" | ";" | "+" | '*' | '>' | '<' | '\`' | '~' | '^' | '|' | '+' | NULL | ALPHANUM |NUMBER | TEMPLATE | METHOD | ANY)* '`'
 
-filename ::= (TEMPLATE|ANY|ALPHANUM|IDENTIFIER|STRING|NULL|NUMBER|'.'|'_'|'/'|'\'|',')+
+filename ::= (TEMPLATE|ANY|ALPHANUM|IDENTIFIER|STRING|NULL|NUMBER|'.'|'_'|'/'|'\'|',')+ {name="filename" }
 
 
 filter ::= 'count' | 'daysAfterNow' | 'daysBeforeNow' | 'htmlEscape' | 'htmlUnescape' | 'toInt' | 'urlDecode' | 'urlEncode' | decode-filter | jsonpath-filter | nth-filter | regex-filter | replace-filter | split-filter | xpath-filter | format-filter | todate-filter
@@ -213,7 +212,7 @@ todate-filter ::= 'toDate' STRING
 decode-filter ::= 'decode' STRING
 regex ::= '/' regex-content '/'
 regex-content ::= ('[' | ']' | '{' | '}' | '(' | ')' | "_" | '-' | '.' | '@' | '!' | '\' | '$' | '?' | '=' | '&' | '%' | "," | ":" | ";" | "+" | '*' | '>' | '<' | '`' | '~' | '^' | '|' | '+' | ALPHANUM | IDENTIFIER | NUMBER | JSON_ID | STRING | ANY | '\/' )+
-key-string ::= (ALPHANUM|IDENTIFIER|NUMBER|NULL|'_'|'-'|'.'|'['|']'|'@'|'$'|'\'|'{'|'}'|TEMPLATE)+
+key-string ::= (ALPHANUM|IDENTIFIER|NUMBER|NULL|'_'|'-'|'.'|'['|']'|'@'|'$'|'\'|'{'|'}'|TEMPLATE)+ {name="key" }
 
 // TODO: support for unicode chars
 // unicode-char(used by quoted-string-escaped-char, key-string-escaped-char, value-string-escaped-char, oneline-string-escaped-char, multiline-string-escaped-char, filename-escaped-char, filename-password-escaped-char)

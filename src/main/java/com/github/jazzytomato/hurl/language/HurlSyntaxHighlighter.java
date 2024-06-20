@@ -1,5 +1,6 @@
 package com.github.jazzytomato.hurl.language;
 
+import com.github.jazzytomato.hurl.language.psi.HurlTokenSets;
 import com.github.jazzytomato.hurl.language.psi.HurlTypes;
 import com.intellij.lexer.Lexer;
 import com.intellij.openapi.editor.DefaultLanguageHighlighterColors;
@@ -14,18 +15,37 @@ import static com.intellij.openapi.editor.colors.TextAttributesKey.createTextAtt
 
 public class HurlSyntaxHighlighter extends SyntaxHighlighterBase {
 
+    // FUNCTION_DECLARATION INSTANCE_METHOD STATIC_METHOD gold
+    // METADATA yellow
+    // KEYWORD orange
+    // STRING green
+    // LINE_COMMENT gray
+    // NUMBER blue
+    // CONSTANT STATIC_FIELD purple
+    // BAD_CHARACTER red
+    // DOC_COMMENT_TAG_VALUE brown
+    // DOC_COMMENT_MARKUP DOC_COMMENT_TAG light green
+    // HIGHLIGHTED_REFERENCE underlined
+    // INLINE_PARAMETER_HINT TEMPLATE_LANGUAGE_COLOR highlighted dark gray
+    // INLINE_PARAMETER_HINT_HIGHLIGHTED highlighted light gray
+    // INLINE_PARAMETER_HINT_CURRENT highlighted blue
+
     public static final TextAttributesKey METHOD =
             createTextAttributesKey("HURL_METHOD", DefaultLanguageHighlighterColors.KEYWORD);
     public static final TextAttributesKey URL =
             createTextAttributesKey("HURL_URL", DefaultLanguageHighlighterColors.STRING);
     public static final TextAttributesKey COMMENT =
             createTextAttributesKey("HURL_COMMENT", DefaultLanguageHighlighterColors.LINE_COMMENT);
+    public static final TextAttributesKey NUMBER =
+            createTextAttributesKey("HURL_NUMBER", DefaultLanguageHighlighterColors.NUMBER);
+    public static final TextAttributesKey SECTION =
+            createTextAttributesKey("HURL_SECTION", DefaultLanguageHighlighterColors.DOC_COMMENT_TAG_VALUE);
     public static final TextAttributesKey BAD_CHARACTER =
             createTextAttributesKey("HURL_BAD_CHARACTER", HighlighterColors.BAD_CHARACTER);
-    public static final TextAttributesKey TEMPLATE = createTextAttributesKey("HURL_TEMPLATE", DefaultLanguageHighlighterColors.GLOBAL_VARIABLE);
+    public static final TextAttributesKey TEMPLATE = createTextAttributesKey("HURL_TEMPLATE", DefaultLanguageHighlighterColors.INLINE_PARAMETER_HINT_CURRENT);
     public static final TextAttributesKey IDENTIFIER = createTextAttributesKey("HURL_IDENTIFIER", DefaultLanguageHighlighterColors.IDENTIFIER);
-    public static final TextAttributesKey LBRACE = createTextAttributesKey("HURL_LBRACE", DefaultLanguageHighlighterColors.BRACES);
-    public static final TextAttributesKey RBRACE = createTextAttributesKey("HURL_RBRACE", DefaultLanguageHighlighterColors.BRACES);
+    public static final TextAttributesKey BRACES = createTextAttributesKey("HURL_BRACES", DefaultLanguageHighlighterColors.BRACES);
+    public static final TextAttributesKey HTTP_VERSION = createTextAttributesKey("HURL_HTTP_VERSION", DefaultLanguageHighlighterColors.HIGHLIGHTED_REFERENCE);
 
     private static final TextAttributesKey[] METHOD_KEYS = new TextAttributesKey[]{METHOD};
     private static final TextAttributesKey[] URL_KEYS = new TextAttributesKey[]{URL};
@@ -34,7 +54,10 @@ public class HurlSyntaxHighlighter extends SyntaxHighlighterBase {
     private static final TextAttributesKey[] BAD_CHAR_KEYS = new TextAttributesKey[]{BAD_CHARACTER};
     private static final TextAttributesKey[] EMPTY_KEYS = new TextAttributesKey[0];
     private static final TextAttributesKey[] IDENTIFIER_KEYS = new TextAttributesKey[]{IDENTIFIER};
-    private static final TextAttributesKey[] BRACE_KEYS = new TextAttributesKey[]{LBRACE, RBRACE};
+    private static final TextAttributesKey[] BRACE_KEYS = new TextAttributesKey[]{BRACES};
+    private static final TextAttributesKey[] NUMBER_KEYS = new TextAttributesKey[]{NUMBER};
+    private static final TextAttributesKey[] SECTION_KEYS = new TextAttributesKey[]{SECTION};
+    private static final TextAttributesKey[] HTTP_VERSION_KEYS = new TextAttributesKey[]{HTTP_VERSION};
 
     @NotNull
     @Override
@@ -50,20 +73,29 @@ public class HurlSyntaxHighlighter extends SyntaxHighlighterBase {
         if (tokenType.equals(HurlTypes.TEMPLATE)) {
             return TEMPLATE_KEYS;
         }
-//        if (tokenType.equals(HurlTypes.IDENTIFIER)) {
-//            return IDENTIFIER_KEYS;
-//        }
+        if (tokenType.equals(HurlTypes.IDENTIFIER)) {
+            return IDENTIFIER_KEYS;
+        }
         if (tokenType.equals(HurlTypes.LBRACE) || tokenType.equals(HurlTypes.RBRACE)) {
             return BRACE_KEYS;
         }
         if (tokenType.equals(HurlTypes.URL)) {
             return URL_KEYS;
         }
-        if (tokenType.equals(HurlTypes.COMMENT)) {
-            return COMMENT_KEYS;
-        }
         if (tokenType.equals(TokenType.BAD_CHARACTER)) {
             return BAD_CHAR_KEYS;
+        }
+        if (HurlTokenSets.NUMBERS.contains(tokenType)) {
+            return NUMBER_KEYS;
+        }
+        if (HurlTokenSets.COMMENTS.contains(tokenType)) {
+            return COMMENT_KEYS;
+        }
+        if (HurlTokenSets.SECTIONS.contains(tokenType)) {
+            return SECTION_KEYS;
+        }
+        if (tokenType.equals(HurlTypes.HTTP_VERSION)) {
+            return HTTP_VERSION_KEYS;
         }
         return EMPTY_KEYS;
     }
