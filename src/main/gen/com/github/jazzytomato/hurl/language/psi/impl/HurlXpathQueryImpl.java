@@ -29,8 +29,8 @@ public class HurlXpathQueryImpl extends HurlQueryImpl implements HurlXpathQuery 
 
   @Override
   @NotNull
-  public PsiElement getString() {
-    return findNotNullChildByType(STRING);
+  public HurlXpath getXpath() {
+    return findNotNullChildByClass(HurlXpath.class);
   }
 
 }

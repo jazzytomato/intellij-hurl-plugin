@@ -5,9 +5,9 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface HurlJsonObject extends PsiElement {
+public interface HurlJsonpath extends PsiElement {
 
   @NotNull
-  List<HurlJsonProp> getJsonPropList();
+  PsiElement getString();
 
 }

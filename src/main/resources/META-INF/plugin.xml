@@ -42,6 +42,15 @@
         <multiHostInjector
                 implementation="com.github.jazzytomato.hurl.language.JsonToHurlInjector"/>
 
+        <multiHostInjector
+                implementation="com.github.jazzytomato.hurl.language.XmlToHurlInjector"/>
+
+        <multiHostInjector
+                implementation="com.github.jazzytomato.hurl.language.JsonpathToHurlInjector"/>
+
+        <multiHostInjector
+                implementation="com.github.jazzytomato.hurl.language.RegexToHurlInjector"/>
+
     </extensions>
 
     <applicationListeners>

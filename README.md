@@ -15,9 +15,9 @@
 - [x] Run individual requests (could use --from-entry & --to-entry options, or generate a tmp file but not ideal)
 - [ ] Code completion
 - [x] JSON language injection
-- [ ] XML language injection
-- [ ] Json path language injection
-- [ ] xpath language injection
+- [x] XML language injection
+- [x] Json path language injection
+- [x] xpath language injection
 - [ ] Vars file support
 - [ ] Better run config options
 - [ ] Mark failed assertions as errors in the editor

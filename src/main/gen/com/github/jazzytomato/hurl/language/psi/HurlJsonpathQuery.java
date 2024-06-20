@@ -8,6 +8,6 @@ import com.intellij.psi.PsiElement;
 public interface HurlJsonpathQuery extends HurlQuery {
 
   @NotNull
-  PsiElement getString();
+  HurlJsonpath getJsonpath();
 
 }

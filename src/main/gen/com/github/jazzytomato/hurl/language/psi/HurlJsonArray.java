@@ -5,7 +5,7 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface HurlJsonArray extends HurlJson {
+public interface HurlJsonArray extends PsiElement {
 
   @NotNull
   List<HurlJsonValue> getJsonValueList();

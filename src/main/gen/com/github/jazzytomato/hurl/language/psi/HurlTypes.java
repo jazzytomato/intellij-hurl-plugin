@@ -66,6 +66,7 @@ public interface HurlTypes {
   IElementType IS_EMPTY_PREDICATE = new HurlElementType("IS_EMPTY_PREDICATE");
   IElementType IS_NUMBER_PREDICATE = new HurlElementType("IS_NUMBER_PREDICATE");
   IElementType JSON = new HurlElementType("JSON");
+  IElementType JSONPATH = new HurlElementType("JSONPATH");
   IElementType JSONPATH_FILTER = new HurlElementType("JSONPATH_FILTER");
   IElementType JSONPATH_QUERY = new HurlElementType("JSONPATH_QUERY");
   IElementType JSON_ARRAY = new HurlElementType("JSON_ARRAY");
@@ -135,6 +136,7 @@ public interface HurlTypes {
   IElementType VERBOSE_OPTION = new HurlElementType("VERBOSE_OPTION");
   IElementType VERY_VERBOSE_OPTION = new HurlElementType("VERY_VERBOSE_OPTION");
   IElementType XML = new HurlElementType("XML");
+  IElementType XPATH = new HurlElementType("XPATH");
   IElementType XPATH_FILTER = new HurlElementType("XPATH_FILTER");
   IElementType XPATH_QUERY = new HurlElementType("XPATH_QUERY");
 
@@ -368,6 +370,12 @@ public interface HurlTypes {
       else if (type == IS_NUMBER_PREDICATE) {
         return new HurlIsNumberPredicateImpl(node);
       }
+      else if (type == JSON) {
+        return new HurlJsonImpl(node);
+      }
+      else if (type == JSONPATH) {
+        return new HurlJsonpathImpl(node);
+      }
       else if (type == JSONPATH_FILTER) {
         return new HurlJsonpathFilterImpl(node);
       }
@@ -571,6 +579,9 @@ public interface HurlTypes {
       }
       else if (type == XML) {
         return new HurlXmlImpl(node);
+      }
+      else if (type == XPATH) {
+        return new HurlXpathImpl(node);
       }
       else if (type == XPATH_FILTER) {
         return new HurlXpathFilterImpl(node);

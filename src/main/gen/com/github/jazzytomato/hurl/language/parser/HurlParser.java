@@ -36,7 +36,6 @@ public class HurlParser implements PsiParser, LightPsiParser {
   }
 
   public static final TokenSet[] EXTENDS_SETS_ = new TokenSet[] {
-    create_token_set_(JSON, JSON_ARRAY, JSON_OBJECT),
     create_token_set_(DECODE_FILTER, FILTER, FORMAT_FILTER, JSONPATH_FILTER,
       NTH_FILTER, REGEX_FILTER, REPLACE_FILTER, SPLIT_FILTER,
       TODATE_FILTER, XPATH_FILTER),
@@ -1149,7 +1148,7 @@ public class HurlParser implements PsiParser, LightPsiParser {
     if (!recursion_guard_(b, l, "json")) return false;
     if (!nextTokenIs(b, "<json>", LBRACE, LBRACKET)) return false;
     boolean r;
-    Marker m = enter_section_(b, l, _COLLAPSE_, JSON, "<json>");
+    Marker m = enter_section_(b, l, _NONE_, JSON, "<json>");
     r = json_array(b, l + 1);
     if (!r) r = json_object(b, l + 1);
     exit_section_(b, l, m, r, false, null);
@@ -1406,25 +1405,37 @@ public class HurlParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // 'jsonpath' STRING
+  // STRING
+  public static boolean jsonpath(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "jsonpath")) return false;
+    if (!nextTokenIs(b, STRING)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, STRING);
+    exit_section_(b, m, JSONPATH, r);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // 'jsonpath' jsonpath
   public static boolean jsonpath_filter(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "jsonpath_filter")) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, JSONPATH_FILTER, "<jsonpath filter>");
     r = consumeToken(b, "jsonpath");
-    r = r && consumeToken(b, STRING);
+    r = r && jsonpath(b, l + 1);
     exit_section_(b, l, m, r, false, null);
     return r;
   }
 
   /* ********************************************************** */
-  // 'jsonpath' STRING
+  // 'jsonpath' jsonpath
   public static boolean jsonpath_query(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "jsonpath_query")) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, JSONPATH_QUERY, "<jsonpath query>");
     r = consumeToken(b, "jsonpath");
-    r = r && consumeToken(b, STRING);
+    r = r && jsonpath(b, l + 1);
     exit_section_(b, l, m, r, false, null);
     return r;
   }
@@ -2160,7 +2171,7 @@ public class HurlParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // oneline-base64|oneline-file|oneline-hex|TEMPLATE|multiline-string|multiline-json-string|multiline-xml-string|multiline-graphql-string|catchall
+  // oneline-base64|oneline-file|oneline-hex|TEMPLATE|multiline-json-string|multiline-xml-string|multiline-graphql-string|multiline-string|catchall
   public static boolean predicate_value(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "predicate_value")) return false;
     boolean r;
@@ -2169,10 +2180,10 @@ public class HurlParser implements PsiParser, LightPsiParser {
     if (!r) r = oneline_file(b, l + 1);
     if (!r) r = oneline_hex(b, l + 1);
     if (!r) r = consumeToken(b, TEMPLATE);
-    if (!r) r = multiline_string(b, l + 1);
     if (!r) r = multiline_json_string(b, l + 1);
     if (!r) r = multiline_xml_string(b, l + 1);
     if (!r) r = multiline_graphql_string(b, l + 1);
+    if (!r) r = multiline_string(b, l + 1);
     if (!r) r = catchall(b, l + 1);
     exit_section_(b, l, m, r, false, null);
     return r;
@@ -3280,25 +3291,37 @@ public class HurlParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // 'xpath' STRING
+  // STRING
+  public static boolean xpath(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "xpath")) return false;
+    if (!nextTokenIs(b, STRING)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, STRING);
+    exit_section_(b, m, XPATH, r);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // 'xpath' xpath
   public static boolean xpath_filter(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "xpath_filter")) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, XPATH_FILTER, "<xpath filter>");
     r = consumeToken(b, "xpath");
-    r = r && consumeToken(b, STRING);
+    r = r && xpath(b, l + 1);
     exit_section_(b, l, m, r, false, null);
     return r;
   }
 
   /* ********************************************************** */
-  // 'xpath' STRING
+  // 'xpath' xpath
   public static boolean xpath_query(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "xpath_query")) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, XPATH_QUERY, "<xpath query>");
     r = consumeToken(b, "xpath");
-    r = r && consumeToken(b, STRING);
+    r = r && xpath(b, l + 1);
     exit_section_(b, l, m, r, false, null);
     return r;
   }

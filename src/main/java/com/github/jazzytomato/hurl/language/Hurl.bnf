@@ -158,8 +158,8 @@ header-query ::= 'header' STRING
 certificate-query ::= 'certificate' ('Subject'|'Issuer'|'Start-Date'|'Expire-Date'|'Serial-Number')
 cookie-query ::= 'cookie' STRING
 body-query ::= 'body'
-xpath-query ::= 'xpath' STRING
-jsonpath-query ::= 'jsonpath' STRING
+xpath-query ::= 'xpath' xpath
+jsonpath-query ::= 'jsonpath' jsonpath
 regex-query ::= 'regex' (STRING|regex)
 variable-query ::= 'variable' STRING
 duration-query ::= 'duration'
@@ -178,7 +178,7 @@ less-or-equal-predicate ::= '<=' predicate-value
 start-with-predicate ::= 'startsWith' (STRING|oneline-hex|oneline-base64)
 end-with-predicate ::= 'endsWith' (STRING|oneline-hex|oneline-base64)
 contain-predicate ::= 'contains' (STRING|oneline-hex|oneline-base64)
-match-predicate ::= 'matches' (STRING|regex)
+match-predicate ::= 'matches' (regex|STRING)
 regex-predicate ::= 'regex' (STRING|regex)
 exist-predicate ::= 'exists'
 is-empty-predicate ::= 'isEmpty'
@@ -192,7 +192,7 @@ collection-predicate ::= 'isCollection'
 date-predicate ::= 'isDate'
 iso-date-predicate ::= 'isIsoDate'
 
-predicate-value ::= oneline-base64|oneline-file|oneline-hex|TEMPLATE|multiline-string|multiline-json-string|multiline-xml-string|multiline-graphql-string|catchall
+predicate-value ::= oneline-base64|oneline-file|oneline-hex|TEMPLATE|multiline-json-string|multiline-xml-string|multiline-graphql-string|multiline-string|catchall
 oneline-base64 ::= 'base64,' (ALPHANUM|IDENTIFIER|'+'|'-'|'='|'==')* ';'
 oneline-file ::= 'file,' filename ';'
 oneline-hex ::= 'hex,' (NUMBER|ALPHANUM)* ';'
@@ -202,12 +202,12 @@ filename ::= (TEMPLATE|ANY|ALPHANUM|IDENTIFIER|STRING|NULL|NUMBER|'.'|'_'|'/'|'\
 
 
 filter ::= 'count' | 'daysAfterNow' | 'daysBeforeNow' | 'htmlEscape' | 'htmlUnescape' | 'toInt' | 'urlDecode' | 'urlEncode' | decode-filter | jsonpath-filter | nth-filter | regex-filter | replace-filter | split-filter | xpath-filter | format-filter | todate-filter
-jsonpath-filter ::= 'jsonpath' STRING
+jsonpath-filter ::= 'jsonpath' jsonpath
 nth-filter ::= 'nth' NUMBER
 regex-filter ::= 'regex' (STRING | regex)
 replace-filter ::= 'replace' (STRING | regex) STRING
 split-filter ::= 'split' STRING
-xpath-filter ::= 'xpath' STRING
+xpath-filter ::= 'xpath' xpath
 format-filter ::= 'format' STRING
 todate-filter ::= 'toDate' STRING
 decode-filter ::= 'decode' STRING
@@ -232,11 +232,14 @@ multiline-xml-string ::= '```xml' NEW_LINE* xml NEW_LINE* '```'
 multiline-graphql-string ::= '```graphql' (TEMPLATE|catchall|NEW_LINE)* '```'
 multiline-string ::= '```' (TEMPLATE|catchall|NEW_LINE)* '```'
 
+xpath ::= STRING
+jsonpath ::= STRING
+
 json ::= json_array | json_object //{hooks=[wsBinders="null, null"]}
 json_value ::= STRING | TEMPLATE | NUMBER | ('true'|'false') | NULL | json
-json_array ::= '[' [!']' json_item (!']' ',' json_item) *] ']' {pin(".*")=1 extends=json}
+json_array ::= '[' [!']' json_item (!']' ',' json_item) *] ']' {pin(".*")=1}
 private json_item ::= json_value {recoverWhile=recover_json}
-json_object ::= '{' [!'}' !'{' json_prop (!'}' ',' json_prop) *] '}' {pin(".*")=1 extends=json}
+json_object ::= '{' [!'}' !'{' json_prop (!'}' ',' json_prop) *] '}' {pin(".*")=1}
 json_prop ::= [] json_name json_value  NEW_LINE* {pin=1 recoverWhile=recover_json} // remove [] to make NAME mandatory
 json_name ::= (JSON_ID | STRING ':')  {name="json_name" }//hooks=[rightBinder="GREEDY_RIGHT_BINDER"]}
 private recover_json ::= !(',' | ']' | '}' | '[' | '{')

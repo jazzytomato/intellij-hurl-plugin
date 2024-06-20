@@ -8,6 +8,6 @@ import com.intellij.psi.PsiElement;
 public interface HurlXpathFilter extends HurlFilter {
 
   @NotNull
-  PsiElement getString();
+  HurlXpath getXpath();
 
 }

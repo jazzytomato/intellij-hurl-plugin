@@ -7,4 +7,10 @@ import com.intellij.psi.PsiElement;
 
 public interface HurlJson extends PsiElement {
 
+  @Nullable
+  HurlJsonArray getJsonArray();
+
+  @Nullable
+  HurlJsonObject getJsonObject();
+
 }

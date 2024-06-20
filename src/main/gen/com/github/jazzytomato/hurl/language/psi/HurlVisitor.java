@@ -240,7 +240,7 @@ public class HurlVisitor extends PsiElementVisitor {
   }
 
   public void visitJsonArray(@NotNull HurlJsonArray o) {
-    visitJson(o);
+    visitPsiElement(o);
   }
 
   public void visitJsonName(@NotNull HurlJsonName o) {
@@ -248,7 +248,7 @@ public class HurlVisitor extends PsiElementVisitor {
   }
 
   public void visitJsonObject(@NotNull HurlJsonObject o) {
-    visitJson(o);
+    visitPsiElement(o);
   }
 
   public void visitJsonProp(@NotNull HurlJsonProp o) {
@@ -256,6 +256,10 @@ public class HurlVisitor extends PsiElementVisitor {
   }
 
   public void visitJsonValue(@NotNull HurlJsonValue o) {
+    visitPsiElement(o);
+  }
+
+  public void visitJsonpath(@NotNull HurlJsonpath o) {
     visitPsiElement(o);
   }
 
@@ -512,6 +516,10 @@ public class HurlVisitor extends PsiElementVisitor {
   }
 
   public void visitXml(@NotNull HurlXml o) {
+    visitPsiElement(o);
+  }
+
+  public void visitXpath(@NotNull HurlXpath o) {
     visitPsiElement(o);
   }
 

@@ -29,8 +29,8 @@ public class HurlJsonpathQueryImpl extends HurlQueryImpl implements HurlJsonpath
 
   @Override
   @NotNull
-  public PsiElement getString() {
-    return findNotNullChildByType(STRING);
+  public HurlJsonpath getJsonpath() {
+    return findNotNullChildByClass(HurlJsonpath.class);
   }
 
 }
