@@ -49,6 +49,15 @@ public class HurlRunConfigurationProducer extends LazyRunConfigurationProducer<H
 
     @Override
     public boolean isConfigurationFromContext(@NotNull HurlRunConfiguration configuration, @NotNull ConfigurationContext context) {
-        return Objects.requireNonNull(context.getPsiLocation()).getContainingFile().getName().equals(configuration.getName());
+        if (context.getPsiLocation().getContainingFile().getClass() == HurlFile.class) {
+            return Objects.equals(configuration.getName(), context.getPsiLocation().getContainingFile().getName());
+        }
+        if (context.getPsiLocation().getNode().getElementType() == HurlTypes.METHOD) {
+            String method = context.getPsiLocation().getText();
+            String url = ((HurlRequestImpl) ((LeafPsiElement) context.getPsiLocation().getNode()).getParent()).getUrlOrTemplate().getText();
+            String expectedName = method + " " + url + " - " + context.getPsiLocation().getContainingFile().getName();
+            return Objects.equals(configuration.getName(), expectedName);
+        }
+        return false;
     }
 }
