@@ -33,19 +33,22 @@ public class HurlSyntaxHighlighter extends SyntaxHighlighterBase {
     public static final TextAttributesKey METHOD =
             createTextAttributesKey("HURL_METHOD", DefaultLanguageHighlighterColors.KEYWORD);
     public static final TextAttributesKey URL =
-            createTextAttributesKey("HURL_URL", DefaultLanguageHighlighterColors.STRING);
+            createTextAttributesKey("HURL_URL", DefaultLanguageHighlighterColors.HIGHLIGHTED_REFERENCE);
+    public static final TextAttributesKey STRING =
+            createTextAttributesKey("HURL_STRING", DefaultLanguageHighlighterColors.STRING);
     public static final TextAttributesKey COMMENT =
             createTextAttributesKey("HURL_COMMENT", DefaultLanguageHighlighterColors.LINE_COMMENT);
     public static final TextAttributesKey NUMBER =
             createTextAttributesKey("HURL_NUMBER", DefaultLanguageHighlighterColors.NUMBER);
     public static final TextAttributesKey SECTION =
-            createTextAttributesKey("HURL_SECTION", DefaultLanguageHighlighterColors.DOC_COMMENT_TAG_VALUE);
+            createTextAttributesKey("HURL_SECTION", DefaultLanguageHighlighterColors.KEYWORD);
     public static final TextAttributesKey BAD_CHARACTER =
             createTextAttributesKey("HURL_BAD_CHARACTER", HighlighterColors.BAD_CHARACTER);
-    public static final TextAttributesKey TEMPLATE = createTextAttributesKey("HURL_TEMPLATE", DefaultLanguageHighlighterColors.INLINE_PARAMETER_HINT_CURRENT);
-    public static final TextAttributesKey IDENTIFIER = createTextAttributesKey("HURL_IDENTIFIER", DefaultLanguageHighlighterColors.IDENTIFIER);
+    public static final TextAttributesKey TEMPLATE = createTextAttributesKey("HURL_TEMPLATE", DefaultLanguageHighlighterColors.STRING);
+    public static final TextAttributesKey IDENTIFIER = createTextAttributesKey("HURL_IDENTIFIER", DefaultLanguageHighlighterColors.CONSTANT);
     public static final TextAttributesKey BRACES = createTextAttributesKey("HURL_BRACES", DefaultLanguageHighlighterColors.BRACES);
-    public static final TextAttributesKey HTTP_VERSION = createTextAttributesKey("HURL_HTTP_VERSION", DefaultLanguageHighlighterColors.HIGHLIGHTED_REFERENCE);
+    public static final TextAttributesKey HTTP_VERSION = createTextAttributesKey("HURL_HTTP_VERSION", DefaultLanguageHighlighterColors.STATIC_METHOD);
+    public static final TextAttributesKey[] KEY_STRING = new TextAttributesKey[]{DefaultLanguageHighlighterColors.CONSTANT};
 
     private static final TextAttributesKey[] METHOD_KEYS = new TextAttributesKey[]{METHOD};
     private static final TextAttributesKey[] URL_KEYS = new TextAttributesKey[]{URL};
@@ -58,6 +61,8 @@ public class HurlSyntaxHighlighter extends SyntaxHighlighterBase {
     private static final TextAttributesKey[] NUMBER_KEYS = new TextAttributesKey[]{NUMBER};
     private static final TextAttributesKey[] SECTION_KEYS = new TextAttributesKey[]{SECTION};
     private static final TextAttributesKey[] HTTP_VERSION_KEYS = new TextAttributesKey[]{HTTP_VERSION};
+    private static final TextAttributesKey[] STRING_KEYS = new TextAttributesKey[]{STRING};
+    private static final TextAttributesKey[] KEY_KEYS = new TextAttributesKey[]{KEY_STRING[0]};
 
     @NotNull
     @Override
@@ -73,9 +78,9 @@ public class HurlSyntaxHighlighter extends SyntaxHighlighterBase {
         if (tokenType.equals(HurlTypes.TEMPLATE)) {
             return TEMPLATE_KEYS;
         }
-        if (tokenType.equals(HurlTypes.IDENTIFIER)) {
-            return IDENTIFIER_KEYS;
-        }
+//        if (tokenType.equals(HurlTypes.IDENTIFIER)) {
+//            return IDENTIFIER_KEYS;
+//        }
         if (tokenType.equals(HurlTypes.LBRACE) || tokenType.equals(HurlTypes.RBRACE)) {
             return BRACE_KEYS;
         }
@@ -96,6 +101,12 @@ public class HurlSyntaxHighlighter extends SyntaxHighlighterBase {
         }
         if (tokenType.equals(HurlTypes.HTTP_VERSION)) {
             return HTTP_VERSION_KEYS;
+        }
+        if (tokenType.equals(HurlTypes.STRING)) {
+            return STRING_KEYS;
+        }
+        if (tokenType.equals(HurlTypes.KEY_STRING)) {
+            return KEY_KEYS;
         }
         return EMPTY_KEYS;
     }

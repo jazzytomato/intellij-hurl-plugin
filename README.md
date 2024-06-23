@@ -8,7 +8,7 @@
 - [x] Code commenter
 - [x] Generate run config from gutter and run it (all file)
 - [x] Fix parser errors
-- [ ] Better syntax highlighting
+- [ ] Better syntax highlighting. Currently just at lexer level - look into annotator for parser syntax highlighting https://plugins.jetbrains.com/docs/intellij/syntax-highlighting-and-error-highlighting.html#annotator
 - [ ] Tidy up and publish
 - [x] Full parser of hurl grammar https://hurl.dev/docs/grammar.html#grammar
 - [ ] Code folding - would be useful to fold hurl entries
@@ -19,7 +19,7 @@
 - [x] Json path language injection
 - [x] xpath language injection
 - [ ] Vars file support
-- [ ] Better run config options
+- [ ] Better run config options? currently just a field for additional args.
 - [ ] Mark failed assertions as errors in the editor
 
 ![Build](https://github.com/jazzytomato/intellij-hurl-plugin/workflows/Build/badge.svg)
