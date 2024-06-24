@@ -17,7 +17,7 @@
 - [x] JSON language injection
 - [x] XML language injection
 - [x] Json path language injection
-- [x] xpath language injection
+- [ ] xpath language injection
 - [ ] Vars file support
 - [ ] Better run config options? currently just a field for additional args.
 - [ ] Mark failed assertions as errors in the editor
@@ -43,7 +43,7 @@ Adds support for Hurl language (https://hurl.dev/).
 This plugin currently provides:
 - Syntax highlighting
 - Parsing / error highlighting
-- JSON, XML, jsonpath & xpath support / language injections.
+- JSON, XML, jsonpath support / language injections.
 - Automatically create run config for whole hurl file and ability to run individual requests from the gutter.
 - Comment / uncomment code & blocks
 
