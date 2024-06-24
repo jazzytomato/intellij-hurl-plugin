@@ -5,6 +5,7 @@
     <vendor>jazzytomato</vendor>
 
     <depends>com.intellij.modules.platform</depends>
+    <depends>com.intellij.modules.json</depends>
 
     <resource-bundle>messages.MyBundle</resource-bundle>
 
@@ -52,8 +53,4 @@
                 implementation="com.github.jazzytomato.hurl.language.RegexToHurlInjector"/>
 
     </extensions>
-
-    <applicationListeners>
-        <listener class="com.github.jazzytomato.hurl.listeners.MyApplicationActivationListener" topic="com.intellij.openapi.application.ApplicationActivationListener"/>
-    </applicationListeners>
 </idea-plugin>
