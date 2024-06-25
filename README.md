@@ -1,7 +1,34 @@
 # intellij-hurl-plugin
 
-## WIP - This plugin is not currently working or published
+![Build](https://github.com/jazzytomato/intellij-hurl-plugin/workflows/Build/badge.svg)
+[![Version](https://img.shields.io/jetbrains/plugin/v/PLUGIN_ID.svg)](https://plugins.jetbrains.com/plugin/PLUGIN_ID)
+[![Downloads](https://img.shields.io/jetbrains/plugin/d/PLUGIN_ID.svg)](https://plugins.jetbrains.com/plugin/PLUGIN_ID)
 
+<!-- Plugin description -->
+Adds support for Hurl language (https://hurl.dev/).
+This plugin currently provides:
+- Syntax highlighting
+- Parsing / error highlighting
+- JSON, XML, jsonpath, xpath support (language injections).
+- Create run configurations for hurl files and run individual requests inline.
+- Comment / uncomment code and blocks
+
+[Github](https://github.com/jazzytomato/intellij-hurl-plugin) | [Issues](https://github.com/jazzytomato/intellij-hurl-plugin/issues) | [Hurl language](https://hurl.dev/)
+<!-- Plugin description end -->
+
+## Installation
+
+- Using the IDE built-in plugin system:
+  
+  <kbd>Settings/Preferences</kbd> > <kbd>Plugins</kbd> > <kbd>Marketplace</kbd> > <kbd>Search for "Hurl"</kbd> >
+  <kbd>Install</kbd>
+  
+- Manually:
+
+  Download the [latest release](https://github.com/jazzytomato/intellij-hurl-plugin/releases/latest) and install it manually using
+  <kbd>Settings/Preferences</kbd> > <kbd>Plugins</kbd> > <kbd>⚙️</kbd> > <kbd>Install plugin from disk...</kbd>
+
+## ToDo list
 - [x] File type registration and icon
 - [x] Basic parser
 - [x] Basic Syntax highlighting
@@ -19,13 +46,11 @@
 - [x] XML language injection
 - [x] Json path language injection
 - [x] xpath language injection
+- [ ] GraphQL language injection
+- [ ] Make language injection dependencies optional
 - [ ] Vars file support
 - [ ] Better run config options? currently just a field for additional args.
 - [ ] Mark failed assertions as errors in the editor
-
-![Build](https://github.com/jazzytomato/intellij-hurl-plugin/workflows/Build/badge.svg)
-[![Version](https://img.shields.io/jetbrains/plugin/v/PLUGIN_ID.svg)](https://plugins.jetbrains.com/plugin/PLUGIN_ID)
-[![Downloads](https://img.shields.io/jetbrains/plugin/d/PLUGIN_ID.svg)](https://plugins.jetbrains.com/plugin/PLUGIN_ID)
 
 ## Template ToDo list
 - [x] Create a new [IntelliJ Platform Plugin Template][template] project.
@@ -39,29 +64,6 @@
 - [ ] Set the [Deployment Token](https://plugins.jetbrains.com/docs/marketplace/plugin-upload.html?from=IJPluginTemplate).
 - [ ] Click the <kbd>Watch</kbd> button on the top of the [IntelliJ Platform Plugin Template][template] to be notified about releases containing new features and fixes.
 
-<!-- Plugin description -->
-Adds support for Hurl language (https://hurl.dev/).
-This plugin currently provides:
-- Syntax highlighting
-- Parsing / error highlighting
-- JSON, XML, jsonpath, xpath support / language injections.
-- Automatically create run config for whole hurl file and ability to run individual requests from the gutter.
-- Comment / uncomment code & blocks
-
-[Github](https://github.com/jazzytomato/intellij-hurl-plugin) | [Issues](https://github.com/jazzytomato/intellij-hurl-plugin/issues)
-<!-- Plugin description end -->
-
-## Installation
-
-- Using the IDE built-in plugin system:
-  
-  <kbd>Settings/Preferences</kbd> > <kbd>Plugins</kbd> > <kbd>Marketplace</kbd> > <kbd>Search for "Hurl"</kbd> >
-  <kbd>Install</kbd>
-  
-- Manually:
-
-  Download the [latest release](https://github.com/jazzytomato/intellij-hurl-plugin/releases/latest) and install it manually using
-  <kbd>Settings/Preferences</kbd> > <kbd>Plugins</kbd> > <kbd>⚙️</kbd> > <kbd>Install plugin from disk...</kbd>
 
 
 ---
