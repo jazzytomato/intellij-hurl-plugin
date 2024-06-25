@@ -35,8 +35,8 @@ public class HurlRegexQueryImpl extends HurlQueryImpl implements HurlRegexQuery 
 
   @Override
   @Nullable
-  public PsiElement getString() {
-    return findChildByType(STRING);
+  public HurlRegexString getRegexString() {
+    return findChildByClass(HurlRegexString.class);
   }
 
 }

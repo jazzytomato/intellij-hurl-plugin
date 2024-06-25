@@ -11,6 +11,6 @@ public interface HurlRegexPredicate extends HurlPredicate {
   HurlRegex getRegex();
 
   @Nullable
-  PsiElement getString();
+  HurlRegexString getRegexString();
 
 }

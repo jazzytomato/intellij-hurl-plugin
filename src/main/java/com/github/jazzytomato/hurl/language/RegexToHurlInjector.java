@@ -1,9 +1,7 @@
 package com.github.jazzytomato.hurl.language;
 
-import com.github.jazzytomato.hurl.language.psi.HurlJsonpath;
 import com.github.jazzytomato.hurl.language.psi.HurlRegexContent;
 import com.github.jazzytomato.hurl.language.psi.HurlTypes;
-import com.intellij.jsonpath.JsonPathLanguage;
 import com.intellij.lang.injection.MultiHostInjector;
 import com.intellij.lang.injection.MultiHostRegistrar;
 import com.intellij.openapi.util.TextRange;

@@ -11,6 +11,6 @@ public interface HurlRegexQuery extends HurlQuery {
   HurlRegex getRegex();
 
   @Nullable
-  PsiElement getString();
+  HurlRegexString getRegexString();
 
 }

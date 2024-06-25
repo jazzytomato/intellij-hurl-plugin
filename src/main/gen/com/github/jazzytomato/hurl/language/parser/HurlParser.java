@@ -1445,7 +1445,7 @@ public class HurlParser implements PsiParser, LightPsiParser {
   public static boolean key_string(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "key_string")) return false;
     boolean r;
-    Marker m = enter_section_(b, l, _NONE_, KEY_STRING, "<key string>");
+    Marker m = enter_section_(b, l, _NONE_, KEY_STRING, "<key>");
     r = key_string_0(b, l + 1);
     while (r) {
       int c = current_position_(b);
@@ -1538,7 +1538,7 @@ public class HurlParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // 'matches' (STRING|regex)
+  // 'matches' (regex-string | regex)
   public static boolean match_predicate(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "match_predicate")) return false;
     boolean r;
@@ -1549,11 +1549,11 @@ public class HurlParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // STRING|regex
+  // regex-string | regex
   private static boolean match_predicate_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "match_predicate_1")) return false;
     boolean r;
-    r = consumeToken(b, STRING);
+    r = regex_string(b, l + 1);
     if (!r) r = regex(b, l + 1);
     return r;
   }
@@ -2310,7 +2310,7 @@ public class HurlParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // ('[' | ']' | '{' | '}' | '(' | ')' | "_" | '-' | '.' | '@' | '!' | '\' | '$' | '?' | '=' | '&' | '%' | "," | ":" | ";" | "+" | '*' | '>' | '<' | '`' | '~' | '^' | '|' | '+' | ALPHANUM | IDENTIFIER | NUMBER | JSON_ID | STRING | ANY | '\/' )+
+  // ('[' | ']' | '{' | '}' | '(' | ')' | "_" | '-' | '.' | '@' | '!' | '\' | '$' | '?' | '=' | '&' | '%' | "," | ":" | ";" | "+" | '*' | '>' | '<' | '`' | '~' | '^' | '|' | '+' | ALPHANUM | IDENTIFIER | NUMBER | JSON_ID | ANY | '\/' )+
   public static boolean regex_content(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "regex_content")) return false;
     boolean r;
@@ -2325,7 +2325,7 @@ public class HurlParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // '[' | ']' | '{' | '}' | '(' | ')' | "_" | '-' | '.' | '@' | '!' | '\' | '$' | '?' | '=' | '&' | '%' | "," | ":" | ";" | "+" | '*' | '>' | '<' | '`' | '~' | '^' | '|' | '+' | ALPHANUM | IDENTIFIER | NUMBER | JSON_ID | STRING | ANY | '\/'
+  // '[' | ']' | '{' | '}' | '(' | ')' | "_" | '-' | '.' | '@' | '!' | '\' | '$' | '?' | '=' | '&' | '%' | "," | ":" | ";" | "+" | '*' | '>' | '<' | '`' | '~' | '^' | '|' | '+' | ALPHANUM | IDENTIFIER | NUMBER | JSON_ID | ANY | '\/'
   private static boolean regex_content_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "regex_content_0")) return false;
     boolean r;
@@ -2362,14 +2362,13 @@ public class HurlParser implements PsiParser, LightPsiParser {
     if (!r) r = consumeToken(b, IDENTIFIER);
     if (!r) r = consumeToken(b, NUMBER);
     if (!r) r = consumeToken(b, JSON_ID);
-    if (!r) r = consumeToken(b, STRING);
     if (!r) r = consumeToken(b, ANY);
     if (!r) r = consumeToken(b, "\\/");
     return r;
   }
 
   /* ********************************************************** */
-  // 'regex' (STRING | regex)
+  // 'regex' (regex-string | regex)
   public static boolean regex_filter(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "regex_filter")) return false;
     boolean r;
@@ -2380,17 +2379,17 @@ public class HurlParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // STRING | regex
+  // regex-string | regex
   private static boolean regex_filter_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "regex_filter_1")) return false;
     boolean r;
-    r = consumeToken(b, STRING);
+    r = regex_string(b, l + 1);
     if (!r) r = regex(b, l + 1);
     return r;
   }
 
   /* ********************************************************** */
-  // 'regex' (STRING|regex)
+  // 'regex' (regex-string | regex)
   public static boolean regex_predicate(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "regex_predicate")) return false;
     boolean r;
@@ -2401,17 +2400,17 @@ public class HurlParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // STRING|regex
+  // regex-string | regex
   private static boolean regex_predicate_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "regex_predicate_1")) return false;
     boolean r;
-    r = consumeToken(b, STRING);
+    r = regex_string(b, l + 1);
     if (!r) r = regex(b, l + 1);
     return r;
   }
 
   /* ********************************************************** */
-  // 'regex' (STRING|regex)
+  // 'regex' (regex-string |regex)
   public static boolean regex_query(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "regex_query")) return false;
     boolean r;
@@ -2422,17 +2421,29 @@ public class HurlParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // STRING|regex
+  // regex-string |regex
   private static boolean regex_query_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "regex_query_1")) return false;
     boolean r;
-    r = consumeToken(b, STRING);
+    r = regex_string(b, l + 1);
     if (!r) r = regex(b, l + 1);
     return r;
   }
 
   /* ********************************************************** */
-  // 'replace' (STRING | regex) STRING
+  // STRING
+  public static boolean regex_string(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "regex_string")) return false;
+    if (!nextTokenIs(b, STRING)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, STRING);
+    exit_section_(b, m, REGEX_STRING, r);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // 'replace' (regex-string | regex) STRING
   public static boolean replace_filter(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "replace_filter")) return false;
     boolean r;
@@ -2444,11 +2455,11 @@ public class HurlParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // STRING | regex
+  // regex-string | regex
   private static boolean replace_filter_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "replace_filter_1")) return false;
     boolean r;
-    r = consumeToken(b, STRING);
+    r = regex_string(b, l + 1);
     if (!r) r = regex(b, l + 1);
     return r;
   }

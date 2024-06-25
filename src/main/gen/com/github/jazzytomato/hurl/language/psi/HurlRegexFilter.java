@@ -11,6 +11,6 @@ public interface HurlRegexFilter extends HurlFilter {
   HurlRegex getRegex();
 
   @Nullable
-  PsiElement getString();
+  HurlRegexString getRegexString();
 
 }

@@ -27,4 +27,15 @@ public class HurlRunConfigurationOptions extends LocatableRunConfigurationOption
     public void setHurlArgs(String args) {
         hurlArgs.setValue(this, args);
     }
+
+    private final StoredProperty<String> hurlFilePath =
+            string("").provideDelegate(this, "Hurl file path:");
+
+    public String getHurlFilePath() {
+        return hurlFilePath.getValue(this);
+    }
+
+    public void setHurlFilePath(String filePath) {
+        hurlFilePath.setValue(this, filePath);
+    }
 }

@@ -159,7 +159,7 @@ cookie-query ::= 'cookie' STRING
 body-query ::= 'body'
 xpath-query ::= 'xpath' xpath
 jsonpath-query ::= 'jsonpath' jsonpath
-regex-query ::= 'regex' (STRING|regex)
+regex-query ::= 'regex' (regex-string |regex)
 variable-query ::= 'variable' STRING
 duration-query ::= 'duration'
 sha256-query ::= 'sha256'
@@ -177,8 +177,8 @@ less-or-equal-predicate ::= '<=' predicate-value
 start-with-predicate ::= 'startsWith' (STRING|oneline-hex|oneline-base64)
 end-with-predicate ::= 'endsWith' (STRING|oneline-hex|oneline-base64)
 contain-predicate ::= 'contains' (STRING|oneline-hex|oneline-base64)
-match-predicate ::= 'matches' (regex|STRING)
-regex-predicate ::= 'regex' (STRING|regex)
+match-predicate ::= 'matches' (regex-string | regex)
+regex-predicate ::= 'regex' (regex-string | regex)
 exist-predicate ::= 'exists'
 is-empty-predicate ::= 'isEmpty'
 include-predicate ::= 'includes' predicate-value
@@ -203,15 +203,16 @@ filename ::= (TEMPLATE|ANY|ALPHANUM|IDENTIFIER|STRING|NULL|NUMBER|'.'|'_'|'/'|'\
 filter ::= 'count' | 'daysAfterNow' | 'daysBeforeNow' | 'htmlEscape' | 'htmlUnescape' | 'toInt' | 'urlDecode' | 'urlEncode' | decode-filter | jsonpath-filter | nth-filter | regex-filter | replace-filter | split-filter | xpath-filter | format-filter | todate-filter
 jsonpath-filter ::= 'jsonpath' jsonpath
 nth-filter ::= 'nth' NUMBER
-regex-filter ::= 'regex' (STRING | regex)
-replace-filter ::= 'replace' (STRING | regex) STRING
+regex-filter ::= 'regex' (regex-string | regex)
+replace-filter ::= 'replace' (regex-string | regex) STRING
 split-filter ::= 'split' STRING
 xpath-filter ::= 'xpath' xpath
 format-filter ::= 'format' STRING
 todate-filter ::= 'toDate' STRING
 decode-filter ::= 'decode' STRING
-regex ::= '/' regex-content '/'
-regex-content ::= ('[' | ']' | '{' | '}' | '(' | ')' | "_" | '-' | '.' | '@' | '!' | '\' | '$' | '?' | '=' | '&' | '%' | "," | ":" | ";" | "+" | '*' | '>' | '<' | '`' | '~' | '^' | '|' | '+' | ALPHANUM | IDENTIFIER | NUMBER | JSON_ID | STRING | ANY | '\/' )+
+regex ::= '/' regex-content '/' //{pin=1 recoverWhile=recover_regex}
+//private recover_regex ::= !NEW_LINE
+regex-content ::= ('[' | ']' | '{' | '}' | '(' | ')' | "_" | '-' | '.' | '@' | '!' | '\' | '$' | '?' | '=' | '&' | '%' | "," | ":" | ";" | "+" | '*' | '>' | '<' | '`' | '~' | '^' | '|' | '+' | ALPHANUM | IDENTIFIER | NUMBER | JSON_ID | ANY | '\/' )+
 key-string ::= (ALPHANUM|IDENTIFIER|NUMBER|NULL|'_'|'-'|'.'|'['|']'|'@'|'$'|'\'|'{'|'}'|TEMPLATE)+ {name="key" }
 
 // TODO: support for unicode chars
@@ -233,6 +234,7 @@ multiline-string ::= '```' (TEMPLATE|catchall|NEW_LINE)* '```'
 
 xpath ::= STRING
 jsonpath ::= STRING
+regex-string ::= STRING
 
 json ::= json_array | json_object //{hooks=[wsBinders="null, null"]}
 json_value ::= STRING | TEMPLATE | NUMBER | ('true'|'false') | NULL | json

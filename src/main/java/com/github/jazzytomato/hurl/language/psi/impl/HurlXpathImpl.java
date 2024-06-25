@@ -1,32 +1,39 @@
 // This is a generated file. Not intended for manual editing.
 package com.github.jazzytomato.hurl.language.psi.impl;
 
+import com.github.jazzytomato.hurl.language.psi.HurlVisitor;
+import com.github.jazzytomato.hurl.language.psi.HurlXpath;
+import com.intellij.extapi.psi.ASTWrapperPsiElement;
+import com.intellij.lang.ASTNode;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.LiteralTextEscaper;
+import com.intellij.psi.PsiElement;
+import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.PsiLanguageInjectionHost;
 import com.intellij.psi.impl.source.tree.LeafElement;
-import org.jetbrains.annotations.*;
-import com.intellij.lang.ASTNode;
-import com.intellij.psi.PsiElementVisitor;
-import com.intellij.extapi.psi.ASTWrapperPsiElement;
-import com.github.jazzytomato.hurl.language.psi.*;
+import org.jetbrains.annotations.NotNull;
 
-import java.util.List;
+import static com.github.jazzytomato.hurl.language.psi.HurlTypes.STRING;
 
-public class HurlRegexContentImpl extends ASTWrapperPsiElement implements HurlRegexContent, PsiLanguageInjectionHost {
-
-  public HurlRegexContentImpl(@NotNull ASTNode node) {
+public class HurlXpathImpl extends ASTWrapperPsiElement implements HurlXpath, PsiLanguageInjectionHost {
+  public HurlXpathImpl(@NotNull ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull HurlVisitor visitor) {
-    visitor.visitRegexContent(this);
+    visitor.visitXpath(this);
   }
 
   @Override
   public void accept(@NotNull PsiElementVisitor visitor) {
     if (visitor instanceof HurlVisitor) accept((HurlVisitor)visitor);
     else super.accept(visitor);
+  }
+
+  @Override
+  @NotNull
+  public PsiElement getString() {
+    return findNotNullChildByType(STRING);
   }
 
   @Override
@@ -42,7 +49,7 @@ public class HurlRegexContentImpl extends ASTWrapperPsiElement implements HurlRe
 
   @Override
   public @NotNull LiteralTextEscaper<? extends PsiLanguageInjectionHost> createLiteralTextEscaper() {
-    return new LiteralTextEscaper<HurlRegexContentImpl>(this) {
+    return new LiteralTextEscaper<HurlXpathImpl>(this) {
       @Override
       public boolean decode(@NotNull TextRange rangeInsideHost, @NotNull StringBuilder outChars) {
         outChars.append(myHost.getText(), rangeInsideHost.getStartOffset(), rangeInsideHost.getEndOffset());
@@ -58,6 +65,11 @@ public class HurlRegexContentImpl extends ASTWrapperPsiElement implements HurlRe
           offset = rangeInsideHost.getEndOffset();
         }
         return offset;
+      }
+
+      @NotNull
+      public TextRange getRelevantTextRange() {
+        return TextRange.from(1, myHost.getTextLength() - 2);
       }
 
       @Override

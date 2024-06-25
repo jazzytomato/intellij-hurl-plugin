@@ -13,11 +13,12 @@
 - [x] Full parser of hurl grammar https://hurl.dev/docs/grammar.html#grammar
 - [ ] Code folding - would be useful to fold hurl entries
 - [x] Run individual requests (could use --from-entry & --to-entry options, or generate a tmp file but not ideal)
+- [ ] Support for running multiple files with glob pattern
 - [ ] Code completion
 - [x] JSON language injection
 - [x] XML language injection
 - [x] Json path language injection
-- [ ] xpath language injection
+- [x] xpath language injection
 - [ ] Vars file support
 - [ ] Better run config options? currently just a field for additional args.
 - [ ] Mark failed assertions as errors in the editor
@@ -43,7 +44,7 @@ Adds support for Hurl language (https://hurl.dev/).
 This plugin currently provides:
 - Syntax highlighting
 - Parsing / error highlighting
-- JSON, XML, jsonpath support / language injections.
+- JSON, XML, jsonpath, xpath support / language injections.
 - Automatically create run config for whole hurl file and ability to run individual requests from the gutter.
 - Comment / uncomment code & blocks
 

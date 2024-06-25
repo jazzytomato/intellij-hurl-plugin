@@ -19,6 +19,7 @@ import com.intellij.openapi.options.SettingsEditor;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.InvalidDataException;
 import com.intellij.openapi.util.JDOMExternalizerUtil;
+import com.intellij.openapi.vfs.LocalFileSystem;
 import com.intellij.openapi.vfs.VirtualFile;
 import org.intellij.lang.annotations.Language;
 import org.jdom.Element;
@@ -31,6 +32,7 @@ import java.util.List;
 public class HurlRunConfiguration extends LocatableConfigurationBase<HurlRunConfigurationOptions> {
 
     public static final String KEY_HURL_PATH = "hurl.path";
+    public static final String KEY_HURL_FILE_PATH = "hurl.filePath";
     public static final String KEY_HURL_ARGS = "hurl.args";
 
     protected HurlRunConfiguration(Project project,
@@ -53,6 +55,14 @@ public class HurlRunConfiguration extends LocatableConfigurationBase<HurlRunConf
         getOptions().setHurlPath(scriptName);
     }
 
+    public String getHurlFilePath() {
+        return getOptions().getHurlFilePath();
+    }
+
+    public void setHurlFilePath(String filePath) {
+        getOptions().setHurlFilePath(filePath);
+    }
+
     public String getHurlArgs() {
         return getOptions().getHurlArgs();
     }
@@ -61,10 +71,20 @@ public class HurlRunConfiguration extends LocatableConfigurationBase<HurlRunConf
         getOptions().setHurlArgs(args);
     }
 
+    public void addHurlArgs(String arg) {
+        String args = getHurlArgs();
+        if (args.isBlank()) {
+            setHurlArgs(arg);
+        } else {
+            setHurlArgs(args + " " + arg);
+        }
+    }
+
     @Override
     public void readExternal(@NotNull Element element) throws InvalidDataException {
         super.readExternal(element);
         setHurlPath(JDOMExternalizerUtil.readField(element, KEY_HURL_PATH));
+        setHurlFilePath(JDOMExternalizerUtil.readField(element, KEY_HURL_FILE_PATH));
         setHurlArgs(JDOMExternalizerUtil.readField(element, KEY_HURL_ARGS, ""));
     }
 
@@ -72,6 +92,7 @@ public class HurlRunConfiguration extends LocatableConfigurationBase<HurlRunConf
     public void writeExternal(@NotNull Element element) {
         super.writeExternal(element);
         JDOMExternalizerUtil.writeField(element, KEY_HURL_PATH, getHurlPath());
+        JDOMExternalizerUtil.writeField(element, KEY_HURL_FILE_PATH, getHurlFilePath());
         JDOMExternalizerUtil.writeField(element, KEY_HURL_ARGS, getHurlArgs());
     }
 
@@ -89,7 +110,8 @@ public class HurlRunConfiguration extends LocatableConfigurationBase<HurlRunConf
             @NotNull
             @Override
             protected ProcessHandler startProcess() throws ExecutionException {
-                VirtualFile file = environment.getDataContext().getData(CommonDataKeys.VIRTUAL_FILE);
+                String hurlFilePath = getOptions().getHurlFilePath();
+                VirtualFile file = LocalFileSystem.getInstance().findFileByPath(hurlFilePath);
                 if (file == null) {
                     throw new ExecutionException("No file selected");
                 }

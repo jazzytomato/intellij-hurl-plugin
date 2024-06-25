@@ -35,8 +35,8 @@ public class HurlRegexPredicateImpl extends HurlPredicateImpl implements HurlReg
 
   @Override
   @Nullable
-  public PsiElement getString() {
-    return findChildByType(STRING);
+  public HurlRegexString getRegexString() {
+    return findChildByClass(HurlRegexString.class);
   }
 
 }

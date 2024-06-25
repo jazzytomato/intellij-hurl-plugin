@@ -5,7 +5,10 @@
     <vendor>jazzytomato</vendor>
 
     <depends>com.intellij.modules.platform</depends>
-    <depends>com.intellij.modules.json</depends>
+    <depends>com.intellij.jsonpath</depends>
+    <depends>XPathView</depends>
+
+
 
     <resource-bundle>messages.MyBundle</resource-bundle>
 
@@ -50,7 +53,13 @@
                 implementation="com.github.jazzytomato.hurl.language.JsonpathToHurlInjector"/>
 
         <multiHostInjector
+                implementation="com.github.jazzytomato.hurl.language.XpathToHurlInjector"/>
+
+        <multiHostInjector
                 implementation="com.github.jazzytomato.hurl.language.RegexToHurlInjector"/>
+
+        <multiHostInjector
+                implementation="com.github.jazzytomato.hurl.language.RegexStringToHurlInjector"/>
 
     </extensions>
 </idea-plugin>

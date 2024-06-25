@@ -33,4 +33,16 @@ public class HurlReplaceFilterImpl extends HurlFilterImpl implements HurlReplace
     return findChildByClass(HurlRegex.class);
   }
 
+  @Override
+  @Nullable
+  public HurlRegexString getRegexString() {
+    return findChildByClass(HurlRegexString.class);
+  }
+
+  @Override
+  @NotNull
+  public PsiElement getString() {
+    return findNotNullChildByType(STRING);
+  }
+
 }

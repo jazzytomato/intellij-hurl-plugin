@@ -110,6 +110,7 @@ public interface HurlTypes {
   IElementType REGEX_FILTER = new HurlElementType("REGEX_FILTER");
   IElementType REGEX_PREDICATE = new HurlElementType("REGEX_PREDICATE");
   IElementType REGEX_QUERY = new HurlElementType("REGEX_QUERY");
+  IElementType REGEX_STRING = new HurlElementType("REGEX_STRING");
   IElementType REPLACE_FILTER = new HurlElementType("REPLACE_FILTER");
   IElementType REQUEST = new HurlElementType("REQUEST");
   IElementType REQUEST_SECTION = new HurlElementType("REQUEST_SECTION");
@@ -501,6 +502,9 @@ public interface HurlTypes {
       }
       else if (type == REGEX_QUERY) {
         return new HurlRegexQueryImpl(node);
+      }
+      else if (type == REGEX_STRING) {
+        return new HurlRegexStringImpl(node);
       }
       else if (type == REPLACE_FILTER) {
         return new HurlReplaceFilterImpl(node);

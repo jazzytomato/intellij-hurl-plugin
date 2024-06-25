@@ -415,6 +415,10 @@ public class HurlVisitor extends PsiElementVisitor {
     visitQuery(o);
   }
 
+  public void visitRegexString(@NotNull HurlRegexString o) {
+    visitPsiElement(o);
+  }
+
   public void visitReplaceFilter(@NotNull HurlReplaceFilter o) {
     visitFilter(o);
   }

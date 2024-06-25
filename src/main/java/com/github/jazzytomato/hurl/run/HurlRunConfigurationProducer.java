@@ -29,10 +29,14 @@ public class HurlRunConfigurationProducer extends LazyRunConfigurationProducer<H
     @Override
     protected boolean setupConfigurationFromContext(@NotNull HurlRunConfiguration configuration, @NotNull ConfigurationContext context, @NotNull Ref<PsiElement> sourceElement) {
         if (sourceElement.get().getClass() == HurlFile.class) {
+            configuration.addHurlArgs("--color");
             configuration.setName(context.getPsiLocation().getContainingFile().getName());
+            configuration.setHurlFilePath(context.getPsiLocation().getContainingFile().getVirtualFile().getPath());
             return true;
         }
         if (sourceElement.get().getNode().getElementType() == HurlTypes.METHOD) {
+            configuration.addHurlArgs("--color");
+            configuration.setHurlFilePath(context.getPsiLocation().getContainingFile().getVirtualFile().getPath());
             String method = sourceElement.get().getText();
             String url = ((HurlRequestImpl) ((LeafPsiElement) sourceElement.get().getNode()).getParent()).getUrlOrTemplate().getText();
             configuration.setName(method + " " + url + " - " + context.getPsiLocation().getContainingFile().getName());
@@ -41,7 +45,7 @@ public class HurlRunConfigurationProducer extends LazyRunConfigurationProducer<H
 
             int currentRequestIndex = Arrays.asList(entries).indexOf(sourceElement.get().getParent().getParent());
 
-            configuration.setHurlArgs("--from-entry " + (currentRequestIndex + 1) + " --to-entry " + (currentRequestIndex + 1));
+            configuration.addHurlArgs("--from-entry " + (currentRequestIndex + 1) + " --to-entry " + (currentRequestIndex + 1));
             return true;
         }
         return false;
@@ -50,13 +54,13 @@ public class HurlRunConfigurationProducer extends LazyRunConfigurationProducer<H
     @Override
     public boolean isConfigurationFromContext(@NotNull HurlRunConfiguration configuration, @NotNull ConfigurationContext context) {
         if (context.getPsiLocation().getContainingFile().getClass() == HurlFile.class) {
-            return Objects.equals(configuration.getName(), context.getPsiLocation().getContainingFile().getName());
+            return Objects.equals(configuration.getName(), context.getPsiLocation().getContainingFile().getName()) && Objects.equals(configuration.getHurlFilePath(), context.getPsiLocation().getContainingFile().getVirtualFile().getPath());
         }
         if (context.getPsiLocation().getNode().getElementType() == HurlTypes.METHOD) {
             String method = context.getPsiLocation().getText();
             String url = ((HurlRequestImpl) ((LeafPsiElement) context.getPsiLocation().getNode()).getParent()).getUrlOrTemplate().getText();
             String expectedName = method + " " + url + " - " + context.getPsiLocation().getContainingFile().getName();
-            return Objects.equals(configuration.getName(), expectedName);
+            return Objects.equals(configuration.getName(), expectedName) && Objects.equals(configuration.getHurlFilePath(), context.getPsiLocation().getContainingFile().getVirtualFile().getPath());
         }
         return false;
     }
