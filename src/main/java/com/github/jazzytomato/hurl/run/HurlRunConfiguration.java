@@ -73,7 +73,7 @@ public class HurlRunConfiguration extends LocatableConfigurationBase<HurlRunConf
 
     public void addHurlArgs(String arg) {
         String args = getHurlArgs();
-        if (args.isBlank()) {
+        if (args == null || args.isBlank()) {
             setHurlArgs(arg);
         } else {
             setHurlArgs(args + " " + arg);
