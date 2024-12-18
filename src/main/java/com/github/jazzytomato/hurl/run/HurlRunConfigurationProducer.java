@@ -28,13 +28,15 @@ public class HurlRunConfigurationProducer extends LazyRunConfigurationProducer<H
 
     @Override
     protected boolean setupConfigurationFromContext(@NotNull HurlRunConfiguration configuration, @NotNull ConfigurationContext context, @NotNull Ref<PsiElement> sourceElement) {
-        if (sourceElement.get().getClass() == HurlFile.class) {
+        PsiElement element = sourceElement.get();
+
+        if (element instanceof HurlFile) {
             configuration.addHurlArgs("--color");
             configuration.setName(context.getPsiLocation().getContainingFile().getName());
             configuration.setHurlFilePath(context.getPsiLocation().getContainingFile().getVirtualFile().getPath());
             return true;
         }
-        if (sourceElement.get().getNode().getElementType() == HurlTypes.METHOD) {
+        if (element.getNode() != null && element.getNode().getElementType() == HurlTypes.METHOD) {
             configuration.addHurlArgs("--color");
             configuration.setHurlFilePath(context.getPsiLocation().getContainingFile().getVirtualFile().getPath());
             String method = sourceElement.get().getText();
