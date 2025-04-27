@@ -5,6 +5,7 @@
     <vendor>jazzytomato</vendor>
 
     <depends>com.intellij.modules.platform</depends>
+    <depends>com.intellij.modules.json</depends>
     <depends>com.intellij.jsonpath</depends>
     <depends>XPathView</depends>
 
