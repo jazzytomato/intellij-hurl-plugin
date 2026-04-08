@@ -19,7 +19,7 @@ public class HurlGutterRunLineMarkerProvider extends RunLineMarkerContributor im
         // Add a run all requests icon to the gutter for the first line of a Hurl file
 
         if (element.getNode().getElementType() == HurlTypes.METHOD && ((LeafPsiElement) element.getNode()).getParent().getNode().getElementType() == HurlTypes.REQUEST) {
-            return new Info(AllIcons.RunConfigurations.TestState.Run, it -> "Run request", ExecutorAction.getActions());
+            return new Info(AllIcons.RunConfigurations.TestState.Run, ExecutorAction.getActions(), it -> "Run request");
         }
         return null;
     }
